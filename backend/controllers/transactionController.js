@@ -1,4 +1,5 @@
 import Transaction from "../models/transaction.model.js";
+import Category from '../models/category.model.js';
 
 const transactionController = {
   //Function to create a new transaction
