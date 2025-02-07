@@ -59,7 +59,7 @@ const transactionController = {
   deleteAllTransactions: async (req, res) => {
     try {
       await Transaction.deleteMany({ userId: req.query.userId });
-      res.json({ message: "All transactions removed" });
+      res.json({ message: "All transactions removed", user: req.query.userId });
     } catch (error) {
       res.status(500).json({ message: "Error while deleting transactions", error });
     }
