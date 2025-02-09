@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './config/db.js'; // Import connectDB function from db.js file
 import transactionRoutes from './routes/transactionRoutes.js'; // Import transactionRoutes object from transactionRoutes.js file
+import authRoutes from './routes/authRoutes.js'; // Import authRoutes object from authRoutes.js file
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 // Define routes
 app.use('/api/transactions', transactionRoutes); // Routes for transactions
+app.use('/auth', authRoutes); // Routes for user authentication
 
 // Porta configurável pelo .env
 const PORT = process.env.PORT || 5000;
