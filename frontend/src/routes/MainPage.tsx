@@ -1,62 +1,36 @@
-import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import mainImage from '../assets/main_image.png';
 
 const MainPage = () => {
-  const { login, loading, error } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await login(email, password);
-      // Clean inputs after login
-      setEmail('');
-      setPassword('');
-    } catch (err) {
-      // Error handling is done in the useAuth hook
-    }
-  };
-
   return (
-    <div className="min-h-screen w-full flex flex-col justify-center items-center py-10 bg-stone-900">
-      <h1 className="text-5xl font-mono font-bold text-white text-center mb-8">FINANCES CONTROL</h1>
-      
-      <div className="w-full max-w-md px-4">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
-          
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            className="px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            required
-          />
-          
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            className="px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            required
-          />
-          
-          <button
-            className={`px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-800 transition-colors
-              ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : 'Login'}
-          </button>
-        </form>
+    <div className="min-h-screen bg-gradient-to-b from-stone-800 to-stone-900 relative overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden">
+        <img 
+          src={mainImage} 
+          alt="Main" 
+          className="object-cover w-full h-[max] opacity-70 object-top" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-stone-900/70 to-stone-900"></div>
+      </div>
+
+      {/* Container principal */}
+      <div className="relative min-h-screen flex flex-col justify-end md:justify-center items-center px-4 py-8 md:py-12">
+        <div className="w-full max-w-md space-y-6 md:space-y-8">
+          {/* Título */}
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-mono font-bold text-white mb-2 md:mb-4 tracking-tight">
+              FINANCES CONTROL
+            </h1>
+            <p className="text-gray-400 text-sm md:text-base">
+              Manage your finances simply and efficiently
+            </p>
+          </div>
+
+          {/* Formulário */}
+          <div className="flex flex-col justify-center bg-white/10 backdrop-blur-lg rounded-xl p-4 sm:p-6 md:p-8 shadow-xl gap-4">
+            <a className='bg-amber-50 border-1 text-2xl font-bold py-2 text-black rounded-lg cursor-pointer text-center' href='/login'>Login</a>
+            <a className='bg-transparent border-1 text-2xl font-bold py-2 text-white rounded-lg cursor-pointer text-center' href='/login'>Register</a>
+          </div>
+        </div>
       </div>
     </div>
   );
