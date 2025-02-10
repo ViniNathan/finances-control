@@ -20,7 +20,7 @@ const Login = () => {
   return (
     <div className="h-screen w-screen bg-stone-200 py-20">
         <div className="flex flex-col justify-center items-center gap-10">
-            <div className="text-4xl">
+            <div className="text-4xl text-center">
                 Welcome back! Glad to see you.
             </div>
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
