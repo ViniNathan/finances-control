@@ -38,7 +38,14 @@ const transactionController = {
   //Function to update a transaction
   updateTransaction: async (req, res) => {
     try {
-      const updatedTransaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      const [day, month, year] = req.body.date.split('/');
+      req.body.date = new Date(year, month - 1, day);
+      const updatedTransaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+      if (!updatedTransaction) {
+        return res.status(404).json({ message: "Transaction not found" });
+      }  
+      
       res.json(updatedTransaction);
     } catch (error) {
       res.status(500).json({ message: "Error while updating transaction", error });
