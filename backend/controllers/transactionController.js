@@ -5,8 +5,8 @@ const transactionController = {
   //Function to create a new transaction
   createTransaction: async (req, res) => {
     try {
-      const { userId, type, amount, categoryId, description, date } = req.body;
-      const newTransaction = new Transaction({ userId, type, amount, categoryId, description, date });
+      const { userId, type, amount, category, description, date } = req.body;
+      const newTransaction = new Transaction({ userId, type, amount, category, description, date });
       await newTransaction.save();
       res.status(201).json(newTransaction);
     } catch (error) {
@@ -17,7 +17,7 @@ const transactionController = {
   //Function to get all transactions
   getTransactions: async (req, res) => {
     try {
-      const transactions = await Transaction.find({ userId: req.query.userId }).populate("categoryId");
+      const transactions = await Transaction.find({ userId: req.query.userId }).populate("category");
       res.json(transactions);
     } catch (error) {
       res.status(500).json({ message: "Error in transactions search", error });
@@ -27,7 +27,7 @@ const transactionController = {
   // Function to get a transaction by id
   getTransactionById: async (req, res) => {
     try {
-      const transaction = await Transaction.findById(req.params.id).populate("categoryId");
+      const transaction = await Transaction.findById(req.params.id).populate("category");
       if (!transaction) return res.status(404).json({ message: "Transaction not found" });
       res.json(transaction);
     } catch (error) {
