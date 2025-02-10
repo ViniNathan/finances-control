@@ -14,9 +14,8 @@ const transactionSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    categoryId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+    category: {
+        type: String,
         required: true
     },
     description: {
