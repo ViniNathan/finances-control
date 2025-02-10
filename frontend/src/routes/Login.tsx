@@ -12,6 +12,8 @@ const Login = () => {
         await login(email, password);
         setEmail('');
         setPassword('');
+        // Redirect to the dashboard
+        window.location.href = '/dashboard';
       } catch (err) {
         // Error handling is done in the useAuth hook
       }
