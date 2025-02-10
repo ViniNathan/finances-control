@@ -6,7 +6,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
   
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
       e.preventDefault();
       try {
         await login(email, password);
@@ -18,7 +18,7 @@ const Login = () => {
     };
 
   return (
-    <div className="h-screen w-screen bg-stone-200 py-20">
+    <div className="h-screen w-screen flex justify-center items-center bg-stone-200 py-20">
         <div className="flex flex-col justify-center items-center gap-10">
             <div className="text-4xl text-center">
                 Welcome back! Glad to see you.
@@ -32,7 +32,7 @@ const Login = () => {
               
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-800 mb-1">
                     Email
                   </label>
                   <input
@@ -40,27 +40,27 @@ const Login = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2 bg-white/5 border border-gray-600 text-white rounded-lg 
-                             focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
+                    className="w-full px-4 py-2 bg-white/5 border border-gray-800 text-black rounded-lg 
+                             focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent
                              placeholder-gray-400 transition-all"
-                    placeholder="Digite seu email"
+                    placeholder="Enter your email"
                     required
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-                    Senha
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-800 mb-1">
+                    Password
                   </label>
                   <input
                     id="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-2 bg-white/5 border border-gray-600 text-white rounded-lg 
-                             focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
+                    className="w-full px-4 py-2 bg-white/5 border border-gray-800 text-black rounded-lg 
+                             focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent
                              placeholder-gray-400 transition-all"
-                    placeholder="Digite sua senha"
+                    placeholder="Enter your password"
                     required
                   />
                 </div>
@@ -69,10 +69,10 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 sm:py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium 
+                className="w-full py-2.5 sm:py-3 px-4 bg-stone-900 hover:bg-stone-700 text-white font-medium 
                          rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 
-                         focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 
-                         disabled:cursor-not-allowed disabled:hover:bg-green-600"
+                         focus:ring-offset-2 focus:ring-stone-500 disabled:opacity-50 
+                         disabled:cursor-not-allowed disabled:hover:bg-stone-600 cursor-pointer"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
