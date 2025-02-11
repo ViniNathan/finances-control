@@ -44,12 +44,12 @@ const MainPage = () => {
         {/* Right Side - Buttons */}
         <div className="flex flex-col justify-center items-center gap-6">
           <img src={money} alt="money" className="size-100"/>
-          <button className="bg-primary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl">
-            <a href="/login">Log In</a>
-          </button>
-          <button className="bg-secondary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl">
-            <a href="/register">Sign Up</a>
-          </button>
+          <a className="text-center bg-primary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl" href="/login">
+            Log In
+          </a>
+          <a className="text-center bg-secondary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl" href="/register">
+            Sign Up
+          </a>
         </div>
       </div>
     </>
