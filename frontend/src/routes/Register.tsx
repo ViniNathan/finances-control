@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../hooks/useAuth';
+import ReturnButton from '../components/ReturnButton';
 
 const Register = () => {
   // Form state management
@@ -88,6 +89,8 @@ const Register = () => {
   };
 
   return (
+    <>
+    <ReturnButton />
     <div className="h-screen w-screen flex justify-center items-center bg-bg py-20">
       <div className="flex flex-col justify-center items-center gap-10">
         <div className="text-6xl text-center font-bold text-primary">FinTrack</div>
@@ -216,6 +219,7 @@ const Register = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
