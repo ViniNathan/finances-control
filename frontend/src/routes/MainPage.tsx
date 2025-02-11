@@ -1,38 +1,58 @@
-import mainImage from '../assets/main_image.png';
+import logo from '../assets/logo_light.png';
+import money from '../assets/money.png';
 
 const MainPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-800 to-stone-900 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <img 
-          src={mainImage} 
-          alt="Main" 
-          className="object-cover w-full h-[max] opacity-70 object-top" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-stone-900/70 to-stone-900"></div>
-      </div>
-
-      {/* Container principal */}
-      <div className="relative min-h-screen flex flex-col justify-end md:justify-center items-center px-4 py-8 md:py-12">
-        <div className="w-full max-w-md space-y-6 md:space-y-8">
-          {/* Título */}
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-mono font-bold text-white mb-2 md:mb-4 tracking-tight">
-              FINANCES CONTROL
-            </h1>
-            <p className="text-gray-400 text-sm md:text-base">
-              Manage your finances simply and efficiently
-            </p>
-          </div>
-
-          {/* Formulário */}
-          <div className="flex flex-col justify-center bg-white/10 backdrop-blur-lg rounded-xl p-4 sm:p-6 md:p-8 shadow-xl gap-4">
-            <a className='bg-amber-50 border-1 text-2xl font-bold py-2 text-black rounded-lg cursor-pointer text-center' href='/login'>Login</a>
-            <a className='bg-transparent border-1 text-2xl font-bold py-2 text-white rounded-lg cursor-pointer text-center' href='/login'>Register</a>
+    <>
+      {/* Mobile Layout */}
+      <div className="min-h-screen bg-bg flex flex-col justify-center items-center py-4 md:hidden">
+        <div className="flex flex-col justify-center items-center gap-4 w-80 text-center">
+          <img src={logo} alt="logo" className="size-20"/>
+          <div className="text-5xl font-bold text-primary">FinTrack</div>
+          <p className="text-lg font-semibold text-dark">
+            Track your expenses and manage your budget
+          </p>
+          <div className="flex flex-col justify-center items-center gap-5 w-full text-xl">
+            <button className="bg-primary text-dark font-bold w-full py-3 rounded-3xl shadow-md hover:bg-opacity-80 transition">
+              <a href="/login">Log In</a>
+            </button>
+            <button className="bg-secondary text-dark font-bold w-full py-3 rounded-3xl shadow-md hover:bg-opacity-80 transition">
+              <a href="/register">Sign Up</a>
+            </button>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden md:grid md:grid-cols-2 md:min-h-screen md:bg-bg md:px-16 md:py-10">
+        {/* Left Side */}
+        <div className="flex flex-col justify-center gap-8">
+          <div className="flex items-end gap-4">
+            <img src={logo} alt="logo" className="size-24"/>
+            <div className="text-6xl font-bold text-primary">FinTrack</div>
+          </div>
+          <p className="text-2xl font-semibold text-dark max-w-lg">
+            Track your expenses and manage your budget efficiently.
+          </p>
+          <ul className="text text-dark list-disc list-inside">
+            <li>Track your incomes and expenses</li>
+            <li>Visualize by category</li>
+            <li>Analyze spending trends over time</li>
+          </ul>
+        </div>
+
+        {/* Right Side - Buttons */}
+        <div className="flex flex-col justify-center items-center gap-6">
+          <img src={money} alt="money" className="size-100"/>
+          <button className="bg-primary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl">
+            <a href="/login">Log In</a>
+          </button>
+          <button className="bg-secondary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl">
+            <a href="/register">Sign Up</a>
+          </button>
+        </div>
+      </div>
+    </>
   );
 };
 
