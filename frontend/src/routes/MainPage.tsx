@@ -6,7 +6,7 @@ const MainPage = () => {
     <>
       {/* Mobile Layout */}
       <div className="min-h-screen bg-bg flex flex-col justify-center items-center py-4 md:hidden">
-        <div className="flex flex-col justify-center items-center gap-4 w-80 text-center">
+        <div className="flex flex-col justify-center items-center gap-4 w-[90vw] text-center">
           <img src={logo} alt="logo" className="size-20"/>
           <div className="text-5xl font-bold text-primary">FinTrack</div>
           <p className="text-lg font-semibold text-dark">
