@@ -79,7 +79,7 @@ const Login = () => {
                 className="w-full py-2.5 sm:py-3 px-4 bg-primary hover:bg-dark-green text-dark hover:text-bg font-semibold  text-lg
                          rounded-3xl transition-colors duration-200 focus:outline-none focus:ring-2 
                          focus:ring-offset-2 focus:ring-stone-500 disabled:opacity-50 
-                         disabled:cursor-not-allowed disabled:hover:bg-stone-600 cursor-pointer"
+                         disabled:cursor-not-allowed disabled:hover:bg-stone-600 cursor-pointer shadow-md"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
