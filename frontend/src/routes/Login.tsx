@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import ReturnButton from '../components/ReturnButton';
 
 const Login = () => {
     const { login, loading, error } = useAuth();
@@ -20,6 +21,8 @@ const Login = () => {
     };
 
   return (
+    <>
+    <ReturnButton />
     <div className="h-screen w-screen flex justify-center items-center bg-bg py-20">
         <div className="flex flex-col justify-center items-center gap-10">
             <div className="text-6xl text-center font-bold text-primary">FinTrack</div>
@@ -96,6 +99,7 @@ const Login = () => {
             </div>
         </div>
     </div>
+    </>
   )
 }
 
