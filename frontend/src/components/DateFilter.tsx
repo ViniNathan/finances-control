@@ -6,7 +6,7 @@ const DateFilter = () => {
   const [selected, setSelected] = useState("Daily");
 
   return (
-    <div className="relative w-max h-max py-2 px-6 bg-secondary rounded-3xl flex flex-row justify-center items-center gap-5">
+    <div className="relative w-max h-max py-2 px-6 bg-secondary rounded-4xl flex flex-row justify-center items-center gap-5">
       {options.map((value) => (
         <div
           key={value}
