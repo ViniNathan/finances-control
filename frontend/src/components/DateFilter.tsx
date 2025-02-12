@@ -6,11 +6,13 @@ const DateFilter = () => {
   const [selected, setSelected] = useState("Daily");
 
   return (
-    <div className="relative w-max h-max py-2 px-6 bg-secondary rounded-4xl flex flex-row justify-center items-center gap-5">
+    <div className="relative w-max h-max py-1 px-3 bg-secondary rounded-4xl flex flex-row justify-center items-center gap-3
+                    md:py-2 md:px-6 md:gap-5">
       {options.map((value) => (
         <div
           key={value}
-          className="relative text-dark-green text-lg font-semibold py-3 px-4 cursor-pointer rounded-3xl"
+          className="relative text-dark-green text-md font-semibold py-3 px-4 cursor-pointer rounded-3xl
+                    md:text-lg"
           onClick={() => setSelected(value)}
         >
           {selected === value && (
