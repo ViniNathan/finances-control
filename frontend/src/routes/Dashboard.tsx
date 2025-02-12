@@ -3,6 +3,7 @@ import Topbar from "../components/Topbar";
 import GeneralProperties from "../components/GeneralProperties";
 import DateFilter from "../components/DateFilter";
 import Register from "../components/Register";
+import Navbar from "../components/Navbar";
 
 
 const Dashboard = () => {
@@ -34,6 +35,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <Navbar />
     </div>
   );
 };
