@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import Topbar from "../components/Topbar";
 import GeneralProperties from "../components/GeneralProperties";
 import DateFilter from "../components/DateFilter";
+import Register from "../components/Register";
+
 
 const Dashboard = () => {
   const generalRef = useRef<HTMLDivElement>(null);
@@ -20,10 +22,17 @@ const Dashboard = () => {
         <GeneralProperties />
       </div>
       <div
-        className="absolute bottom-0 w-screen flex justify-center items-start bg-bg rounded-tl-4xl rounded-tr-4xl p-5 overflow-auto"
+        className=" absolute bottom-0 w-screen flex justify-center items-start bg-bg rounded-tl-4xl rounded-tr-4xl p-5 overflow-auto shadow-[0_-5px_10px_rgba(14,62,62,0.3)]"
         style={{ top: `${generalHeight + 64}px` }}
       >
-        <DateFilter />
+        <div className="w-screen flex flex-col justify-start items-center">
+          <DateFilter />
+          <div className="overflow-hidden w-full mt-5">
+          <Register type="Income" date="12/02/2025" amount={3000} category="Salary"/>
+          <Register type="Income" date="12/02/2025" amount={1000} category="Rent"/>
+          <Register type="Expense" date="12/02/2025"  amount={1100} category="Food"/>
+          </div>
+        </div>
       </div>
     </div>
   );
