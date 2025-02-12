@@ -10,7 +10,7 @@ const authController = {
             // Verify if user exists
             const userExists = await User.findOne({ email });
             if (userExists) {
-                return res.status(400).json({ message: 'Email already registered',  error: error.message });
+                return res.status(400).json({ message: 'Email already registered' });
             }
     
             // Create password hash
