@@ -4,7 +4,8 @@ const transactionController = {
   //Function to create a new transaction
   createTransaction: async (req, res) => {
     try {
-      const { userId, type, amount, category, description, date } = req.body;
+      const {type, amount, category, description, date } = req.body;
+      const userId = req.user._id;
       const newTransaction = new Transaction({ userId, type, amount, category, description, date });
       await newTransaction.save();
       res.status(201).json(newTransaction);
@@ -16,7 +17,8 @@ const transactionController = {
   //Function to get all transactions
   getTransactions: async (req, res) => {
     try {
-      const transactions = await Transaction.find({ userId: req.query.userId }).populate("category");
+      const userId = req.user._id;
+      const transactions = await Transaction.find({ userId }).populate("category");
       res.json(transactions);
     } catch (error) {
       res.status(500).json({ message: "Error in transactions search", error });
@@ -26,7 +28,10 @@ const transactionController = {
   // Function to get a transaction by id
   getTransactionById: async (req, res) => {
     try {
-      const transaction = await Transaction.findById(req.params.id).populate("category");
+      const transaction = await Transaction.findOne({
+        _id: req.params.id,
+        userId: req.user._id 
+      }).populate("category");
       if (!transaction) return res.status(404).json({ message: "Transaction not found" });
       res.json(transaction);
     } catch (error) {
@@ -39,7 +44,14 @@ const transactionController = {
     try {
       const [day, month, year] = req.body.date.split('/');
       req.body.date = new Date(year, month - 1, day);
-      const updatedTransaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+      const updatedTransaction = await Transaction.findOneAndUpdate(
+        {
+          _id: req.params.id,
+          userId: req.user._id 
+        },
+        req.body,
+        { new: true, runValidators: true }
+      );
 
       if (!updatedTransaction) {
         return res.status(404).json({ message: "Transaction not found" });
@@ -54,7 +66,15 @@ const transactionController = {
   //Function to delete a transaction
   deleteTransaction: async (req, res) => {
     try {
-      await Transaction.findByIdAndDelete(req.params.id);
+      const deletedTransaction = await Transaction.findOneAndDelete({
+        _id: req.params.id,
+        userId: req.user._id
+      });
+      
+      if (!deletedTransaction) {
+        return res.status(404).json({ message: "Transaction not found" });
+      }
+      
       res.json({ message: "Transaction removed" });
     } catch (error) {
       res.status(500).json({ message: "Error while deleting transaction", error });
@@ -64,8 +84,9 @@ const transactionController = {
   //Function to delete all transactions off user
   deleteAllTransactions: async (req, res) => {
     try {
-      await Transaction.deleteMany({ userId: req.query.userId });
-      res.json({ message: "All transactions removed", user: req.query.userId });
+      const userId = req.user._id;
+      await Transaction.deleteMany({ userId });
+      res.json({ message: "All transactions removed", user: userId });
     } catch (error) {
       res.status(500).json({ message: "Error while deleting transactions", error });
     }
