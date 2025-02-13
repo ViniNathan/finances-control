@@ -1,5 +1,6 @@
 import { IoIosLogOut } from "react-icons/io";
 import { GiTakeMyMoney, GiReceiveMoney, GiPayMoney } from "react-icons/gi";
+import { useNavigate } from "react-router";
 
 interface TopbarProps {
   username?: string;
@@ -8,30 +9,37 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ username = "Username", classname, isPanelExpanded }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove the token from local storage
+    navigate("/login"); // Redirect to login page
+  };
+
   const handlePanel = () => {
-  if (isPanelExpanded) {
-    return (
-      <div className="flex flex-row justify-center items-center gap-6">
+    if (isPanelExpanded) {
+      return (
+        <div className="flex flex-row justify-center items-center gap-6">
           <div className="hidden md:flex md:gap-6">
             <div className="flex flex-row justify-center items-center gap-1">
-                <GiTakeMyMoney className="size-8"/>
-                <div className="text-bg font-bold text-sm">$ 0.00</div>
+              <GiTakeMyMoney className="size-8" />
+              <div className="text-bg font-bold text-sm">$ 0.00</div>
             </div>
             <div className="flex flex-row justify-center items-center gap-1">
-                <GiReceiveMoney className="size-8"/>
-                <div className="text-bg font-bold text-sm">$ 0.00</div>
+              <GiReceiveMoney className="size-8" />
+              <div className="text-bg font-bold text-sm">$ 0.00</div>
             </div>
             <div className="flex flex-row justify-center items-center gap-1">
-                <GiPayMoney className="size-8"/>
-                <div className="text-bg font-bold text-sm">$ 0.00</div>
+              <GiPayMoney className="size-8" />
+              <div className="text-bg font-bold text-sm">$ 0.00</div>
             </div>
           </div>
-          <IoIosLogOut className="size-7 cursor-pointer" />
-      </div>
-    );
-  } else{
-    return (<IoIosLogOut className="size-7 cursor-pointer" />);
-  }
+          <IoIosLogOut className="size-7 cursor-pointer" onClick={handleLogout} />
+        </div>
+      );
+    } else {
+      return <IoIosLogOut className="size-7 cursor-pointer" onClick={handleLogout} />;
+    }
   };
 
   return (
