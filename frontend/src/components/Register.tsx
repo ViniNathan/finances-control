@@ -1,5 +1,7 @@
 import React from 'react';
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
+import { RiDeleteBinFill } from "react-icons/ri";
+import { MdOutlineModeEdit } from "react-icons/md";
 
 interface RegisterProps {
     type: string;
@@ -34,7 +36,13 @@ const Register: React.FC<RegisterProps> = ({ type, amount, date, category }) => 
   };
 
   return (
-    <div className="my-4 py-4 flex flex-row justify-between items-center gap-4">
+    <div className="relative my-4 py-4 flex flex-row justify-between items-center gap-4">
+      <button className="absolute top-3 right-0 text-dark hover:text-red-500">
+        <RiDeleteBinFill />
+      </button>
+      <button className="absolute top-3 right-6 text-dark hover:text-primary">
+        <MdOutlineModeEdit />
+      </button>
       {handleType(type)}
       <div className="flex flex-col justify-center items-start min-w-32 max-w-48 flex-1">
         <div className="text-xs font-bold text-dark-green w-full truncate">
