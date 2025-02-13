@@ -1,5 +1,5 @@
 import api from './api';
-import { User, LoginCredentials, RegisterCredentials } from '../types/auth';
+import { User, LoginCredentials, RegisterCredentials } from '../types/auth.tsx';
 
 export const authService = {
   async register(userData: RegisterCredentials): Promise<User> {
