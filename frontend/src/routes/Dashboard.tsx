@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import Topbar from "../components/Topbar";
 import GeneralProperties from "../components/GeneralProperties";
@@ -6,12 +6,16 @@ import DateFilter from "../components/DateFilter";
 import Register from "../components/Register";
 import Navbar from "../components/NavBar";
 import NewTransaction from "../components/NewTransaction";
+import useTransactions from "../hooks/useTransactions";
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const generalRef = useRef<HTMLDivElement>(null);
   const [generalHeight, setGeneralHeight] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
+  const { transactions } = useTransactions();
+
+  console.log(transactions);
 
   useEffect(() => {
     if (generalRef.current) {
@@ -49,9 +53,19 @@ const Dashboard = () => {
             <>
               <DateFilter />
               <div className="overflow-hidden w-full mt-5">
-                <Register type="Income" date="12/02/2025" amount={3000} category="Salary" />
-                <Register type="Income" date="12/02/2025" amount={1000} category="Rent" />
-                <Register type="Expense" date="12/02/2025" amount={1100} category="Food" />
+                {transactions.length === 0 ? (
+                  <p>No transactions found.</p>
+                ) : (
+                  transactions.map((transaction) => (
+                    <Register
+                      key={transaction._id}
+                      type={transaction.type}
+                      date={transaction.date}
+                      amount={transaction.amount}
+                      category={transaction.category}
+                    />
+                  ))
+                )}
               </div>
             </>
           ) : (
@@ -63,5 +77,6 @@ const Dashboard = () => {
     </div>
   );
 };
+
 
 export default Dashboard;
