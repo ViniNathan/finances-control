@@ -25,13 +25,13 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen w-screen bg-primary flex flex-col">
-      <Topbar classname="py-4 px-4 md:px-8" />
+      <Topbar classname="py-4 px-4 md:px-8" isPanelExpanded={isPanelExpanded}/>
       <div ref={generalRef}>
         <GeneralProperties />
       </div>
       <div
         className="absolute bottom-0 w-screen flex flex-col justify-start items-center bg-bg rounded-tl-4xl rounded-tr-4xl p-5 overflow-auto shadow-[0_-5px_10px_rgba(14,62,62,0.3)]"
-        style={{ top: isPanelExpanded ? "65px" : `${generalHeight + 64}px` }}
+        style={{ top: isPanelExpanded ? "70px" : `${generalHeight + 64}px` }}
       >
         <button
           onClick={togglePanel}
@@ -59,7 +59,7 @@ const Dashboard = () => {
           )}
         </div>
       </div>
-      <Navbar isAdding={isAdding} setIsAdding={setIsAdding} />
+      <Navbar isAdding={isAdding} setIsAdding={setIsAdding}/>
     </div>
   );
 };
