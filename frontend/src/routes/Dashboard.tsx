@@ -13,14 +13,46 @@ const Dashboard: React.FC = () => {
   const [generalHeight, setGeneralHeight] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
-  const { transactions } = useTransactions();
-  console.log(transactions);
+  const { transactions, fetchTransactions } = useTransactions();
+  
+
+  const pollingInterval = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (generalRef.current) {
       setGeneralHeight(generalRef.current.clientHeight);
     }
   }, []);
+
+  useEffect(() => {
+    const pollUpdates = () => {
+      fetchTransactions();
+    };
+
+    pollingInterval.current = window.setInterval(pollUpdates, 5000);
+
+    return () => {
+      if (pollingInterval.current) {
+        window.clearInterval(pollingInterval.current);
+      }
+    };
+  }, [fetchTransactions]);
+
+  useEffect(() => {
+    if (isAdding && pollingInterval.current) {
+      window.clearInterval(pollingInterval.current);
+    } else if (!isAdding) {
+      pollingInterval.current = window.setInterval(() => {
+        fetchTransactions();
+      }, 5000);
+    }
+
+    return () => {
+      if (pollingInterval.current) {
+        window.clearInterval(pollingInterval.current);
+      }
+    };
+  }, [isAdding, fetchTransactions]);
 
   const togglePanel = () => {
     setIsPanelExpanded(!isPanelExpanded);
@@ -76,6 +108,5 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
-
 
 export default Dashboard;
