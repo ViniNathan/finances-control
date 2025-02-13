@@ -7,28 +7,36 @@ const GeneralProperties = () => {
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const transactions = await transactionService.getTransactions();
+  const fetchTransactions = async () => {
+    try {
+      const transactions = await transactionService.getTransactions();
+      
+      const totalIncome = transactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + t.amount, 0);
         
-        const totalIncome = transactions
-          .filter(t => t.type === 'income')
-          .reduce((sum, t) => sum + t.amount, 0);
-          
-        const totalExpense = transactions
-          .filter(t => t.type === 'expense')
-          .reduce((sum, t) => sum + t.amount, 0);
-          
-        setIncome(totalIncome);
-        setExpense(totalExpense);
-        setBalance(totalIncome - totalExpense);
-      } catch (error) {
-        console.error('Error fetching transactions:', error);
-      }
-    };
+      const totalExpense = transactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + t.amount, 0);
+        
+      setIncome(totalIncome);
+      setExpense(totalExpense);
+      setBalance(totalIncome - totalExpense);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchTransactions();
+
+    const intervalId = setInterval(() => {
+      fetchTransactions();
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const formatCurrency = (value: number) => {
