@@ -85,7 +85,7 @@ const Dashboard: React.FC = () => {
               <DateFilter />
               <div className="overflow-hidden w-full mt-5">
                 {transactions.length === 0 ? (
-                  <p>No transactions found.</p>
+                  <div className="text-dark-green text-lg font-semibold">No transactions found.</div>
                 ) : (
                   transactions.map((transaction) => (
                     <Register
