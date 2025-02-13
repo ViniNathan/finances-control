@@ -55,14 +55,14 @@ const NewTransaction: React.FC<NewTransactionProps> = ({ setIsAdding }) => {
         />
         
         <textarea 
-          className="w-full bg-secondary p-3 rounded-3xl text-sm text-gray-800 placeholder-gray-500 min-h-[160px] text-left align-text-top resize-y" 
+          className="w-full bg-secondary p-3 rounded-3xl text-sm text-gray-800 placeholder-gray-500 h-[100px] text-left align-text-top resize-none" 
           placeholder="Description" 
         />
 
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
           <button
             type="submit"
-            className="w-full bg-primary text-dark-green px-6 py-2 rounded-4xl shadow-md transition-all hover:bg-dark-green hover:text-bg"
+            className="w-full bg-primary text-dark-green px-6 py-2 rounded-4xl shadow-md transition-all font-bold hover:bg-dark-green hover:text-bg"
           >
             Add
           </button>
