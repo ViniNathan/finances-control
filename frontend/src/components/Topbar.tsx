@@ -12,7 +12,7 @@ const Topbar: React.FC<TopbarProps> = ({ username = "Username", classname, isPan
   if (isPanelExpanded) {
     return (
       <div className="flex flex-row justify-center items-center gap-6">
-          <div className="hidden md:flex">
+          <div className="hidden md:flex md:gap-6">
             <div className="flex flex-row justify-center items-center gap-1">
                 <GiTakeMyMoney className="size-8"/>
                 <div className="text-bg font-bold text-sm">$ 0.00</div>
