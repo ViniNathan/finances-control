@@ -21,7 +21,7 @@ export function useAuth() {
       setUser(data);
       return data;
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao fazer login');
+      setError(err.response?.data?.message || 'Error while logging in');
       throw err;
     } finally {
       setLoading(false);
@@ -36,7 +36,7 @@ export function useAuth() {
       setUser(data);
       return data;
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao registrar');
+      setError(err.response?.data?.message || 'Registration failed');
       throw err;
     } finally {
       setLoading(false);
