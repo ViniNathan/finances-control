@@ -14,7 +14,6 @@ const Dashboard: React.FC = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
   const { transactions } = useTransactions();
-
   console.log(transactions);
 
   useEffect(() => {
