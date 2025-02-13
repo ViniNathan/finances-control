@@ -1,6 +1,9 @@
 import express from 'express'; // Import express module
-const router = express.Router(); // Create router object using express Router method
+import { protect } from '../middleware/authMiddleware.js'; // Import protect function from authMiddleware.js file
 import transactionController from '../controllers/transactionController.js'; // Import transactionController object from transactionController.js file
+
+const router = express.Router(); // Create router object using express Router method
+router.use(protect); // Protect all routes in this file
 
 // Define routes
 router.post("/", transactionController.createTransaction);
