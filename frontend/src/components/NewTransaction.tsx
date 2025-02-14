@@ -60,7 +60,8 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
         </div>
         <div className="flex flex-row gap-1">
           <input 
-            className="w-full bg-secondary p-3 rounded-3xl text-sm text-gray-800 placeholder-gray-500" 
+            className="w-full bg-secondary p-3 rounded-3xl text-sm text-black placeholder-gray-400
+            focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" 
             type="text" 
             placeholder="Category" 
             value={category}
@@ -68,7 +69,8 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
           />
           
           <input 
-            className="w-full bg-secondary p-3 rounded-3xl text-sm text-gray-800 placeholder-gray-500" 
+            className="w-full bg-secondary p-3 rounded-3xl text-sm text-black placeholder-gray-400
+            focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" 
             type="number" 
             placeholder="Amount" 
             value={amount}
@@ -76,7 +78,8 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
           />
         </div>
         <input 
-          className="w-full bg-secondary p-3 rounded-3xl text-sm text-gray-800 placeholder-gray-500" 
+          className="w-full bg-secondary p-3 rounded-3xl text-sm text-black placeholder-gray-400
+          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" 
           type="date"
           placeholder="Select a date"
           defaultValue={new Date().toISOString().split("T")[0]}
@@ -85,7 +88,8 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
         />
         
         <textarea 
-          className="w-full bg-secondary p-3 rounded-3xl text-sm text-gray-800 placeholder-gray-500 h-[100px] text-left align-text-top resize-none" 
+          className="w-full bg-secondary p-3 rounded-3xl text-sm text-black placeholder-gray-400 h-[100px] text-left align-text-top resize-none
+          focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" 
           placeholder="Description" 
           value={description}
           onChange={(e) => setDescription(e.target.value)}
