@@ -18,7 +18,7 @@ const Register = () => {
     confirmPassword: ''
   });
 
-  const { register, loading, error: authError } = useAuth();
+  const { register, loading } = useAuth();
   const navigate = useNavigate();
 
   const validateForm = () => {
