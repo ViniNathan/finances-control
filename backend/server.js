@@ -20,7 +20,7 @@ app.use(cors()); // Middleware to enable CORS
 
 // Define routes
 app.use('/api/transactions', transactionRoutes); // Routes for transactions
-app.use('/auth', authRoutes); // Routes for user authentication
+app.use('/api/auth', authRoutes); // Routes for user authentication
 
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
