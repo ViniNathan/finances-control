@@ -5,7 +5,7 @@ interface NewTransactionProps {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const NewTransaction: React.FC<NewTransactionProps> = () => {
+const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
   const [transactionType, setTransactionType] = useState<"income" | "expense">("income");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState(0);
@@ -23,6 +23,7 @@ const NewTransaction: React.FC<NewTransactionProps> = () => {
         date,
         description,
       });
+      setIsAdding(false);
     } catch (err) {
       console.error(err);
     }
