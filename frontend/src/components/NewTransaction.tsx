@@ -8,7 +8,7 @@ interface NewTransactionProps {
 const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
   const [transactionType, setTransactionType] = useState<"income" | "expense">("income");
   const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
   const { createTransaction } = useTransactions();
@@ -19,7 +19,7 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
       await createTransaction({
         type: transactionType,
         category,
-        amount,
+        amount: Number(amount),
         date,
         description,
       });
@@ -72,12 +72,14 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
             type="number" 
             placeholder="Amount" 
             value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ""))}
           />
         </div>
         <input 
           className="w-full bg-secondary p-3 rounded-3xl text-sm text-gray-800 placeholder-gray-500" 
           type="date"
+          placeholder="Select a date"
+          defaultValue={new Date().toISOString().split("T")[0]}
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
