@@ -3,7 +3,7 @@ import { User, LoginCredentials, RegisterCredentials } from '../types/auth.tsx';
 
 export const authService = {
   async register(userData: RegisterCredentials): Promise<User> {
-    const response = await api.post<User>('/auth/register', userData);
+    const response = await api.post<User>('/api/auth/register', userData);
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
     }
@@ -11,7 +11,7 @@ export const authService = {
   },
 
   async login(credentials: LoginCredentials): Promise<User> {
-    const response = await api.post<User>('/auth/login', credentials);
+    const response = await api.post<User>('/api/auth/login', credentials);
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
     }
