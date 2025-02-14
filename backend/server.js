@@ -17,9 +17,6 @@ connectDB(); // Call connectDB function
 app.use(express.json()); // Middleware to parse JSON data in request body
 app.use(cors()); // Middleware to enable CORS
 
-app.get('/', (req, res) => {
-    res.send('Server is ready'); // Send message to client
-});
 
 // Define routes
 app.use('/api/transactions', transactionRoutes); // Routes for transactions
