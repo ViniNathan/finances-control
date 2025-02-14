@@ -9,7 +9,7 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
   const [transactionType, setTransactionType] = useState<"income" | "expense">("income");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [description, setDescription] = useState("");
   const { createTransaction } = useTransactions();
 
@@ -82,8 +82,7 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
           focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" 
           type="date"
           placeholder="Select a date"
-          defaultValue={new Date().toISOString().split("T")[0]}
-          value={date}
+          value={date || new Date().toISOString().split("T")[0]}
           onChange={(e) => setDate(e.target.value)}
         />
         
