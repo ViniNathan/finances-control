@@ -1,10 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
 
 const api: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/'
+  baseURL: import.meta.env.BASE_URL
 });
 
-// Add a request interceptor to add the token to the headers
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
