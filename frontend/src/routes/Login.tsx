@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import ReturnButton from '../components/ReturnButton';
+import { useNavigate } from 'react-router';
 
 const Login = () => {
     const { login, loading, error } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
   
     const handleSubmit = async (e: any) => {
       e.preventDefault();
@@ -14,7 +16,7 @@ const Login = () => {
         setEmail('');
         setPassword('');
         // Redirect to the dashboard
-        window.location.href = '/dashboard';
+        navigate('/dashboard');
       } catch (err) {
         // Error handling is done in the useAuth hook
       }
