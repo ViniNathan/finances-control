@@ -24,11 +24,11 @@ const authController = {
                 passwordHash
             });
     
-            // Create token for user (expires in 30 days)
+            // Create token for user (expires in 2 days)
             const token = jwt.sign(
                 { id: user._id },
                 process.env.JWT_SECRET,
-                { expiresIn: '30d' }
+                { expiresIn: '2d' }
             );
     
             res.status(201).json({
@@ -58,11 +58,11 @@ const authController = {
                 return res.status(400).json({ message: 'Invalid password' });
             }
     
-            // Create token for user (expires in 30 days)
+            // Create token for user (expires in 2 days)
             const token = jwt.sign(
                 { id: user._id },
                 process.env.JWT_SECRET,
-                { expiresIn: '30d' }
+                { expiresIn: '2d' }
             );
     
             res.json({
@@ -73,6 +73,21 @@ const authController = {
             });
         } catch (error) {
             res.status(500).json({ message: 'Login error', error: error.message });
+        }
+    },
+
+    validate: async (req, res) => {
+        try {
+            res.json({
+                valid: true,
+                user: {
+                    _id: req.user._id,
+                    name: req.user.name,
+                    email: req.user.email
+                }
+            });
+        } catch (error) {
+            res.status(500).json({ message: 'Error validating token', error: error.message });
         }
     }
 
