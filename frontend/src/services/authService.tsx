@@ -18,6 +18,11 @@ export const authService = {
     return response.data;
   },
 
+  async validateToken(): Promise<User> {
+    const response = await api.get<User>('/api/auth/validate');
+    return response.data;
+  },
+
   logout(): void {
     localStorage.removeItem('token');
   }
