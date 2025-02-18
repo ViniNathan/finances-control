@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
         <GeneralProperties />
       </div>
       <div
-        className="absolute bottom-0 w-screen flex flex-col justify-start items-center bg-bg rounded-tl-4xl rounded-tr-4xl p-5 overflow-auto shadow-[0_-5px_10px_rgba(14,62,62,0.3)]"
+        className="absolute bottom-0 w-screen flex flex-col justify-start items-center bg-bg rounded-tl-4xl rounded-tr-4xl p-5 overflow-clip shadow-[0_-5px_10px_rgba(14,62,62,0.3)]"
         style={{ top: isPanelExpanded ? "70px" : `${generalHeight + 64}px` }}
       >
         <button
@@ -83,7 +83,13 @@ const Dashboard: React.FC = () => {
           {!isAdding ? (
             <>
               <DateFilter />
-              <div className="overflow-hidden w-full mt-5">
+              <div className="overflow-y-scroll w-full mt-5 relative max-h-[35%] md:max-h-[51%] pr-5
+                            [&::-webkit-scrollbar]:w-1
+                            [&::-webkit-scrollbar-track]:bg-secondary 
+                            [&::-webkit-scrollbar-thumb]:bg-primary
+                            [&::-webkit-scrollbar-thumb]:rounded-full 
+                            [&::-webkit-scrollbar-track]:rounded-full
+                            [&::-webkit-scrollbar-thumb:hover]:bg-gray-400">
                 {transactions.length === 0 ? (
                   <div className="text-dark-green text-lg font-semibold">No transactions found.</div>
                 ) : (
