@@ -18,9 +18,17 @@ export const authService = {
     return response.data;
   },
 
-  async validateToken(): Promise<User> {
-    const response = await api.get<User>('/api/auth/validate');
-    return response.data;
+  async validateToken(): Promise<boolean> {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return false;
+      }
+      const response = await api.get<{valid: boolean}>('/api/auth/validate');
+      return response.status === 200 && response.data.valid;
+    } catch (error) {
+      return false;
+    }
   },
 
   logout(): void {
