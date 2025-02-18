@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="h-max w-screen bg-primary flex flex-col">
+    <div className="h-[100dvh] w-screen bg-primary flex flex-col">
       <Topbar classname="py-4 px-4 md:px-8" isPanelExpanded={isPanelExpanded}/>
       <div ref={generalRef}>
         <GeneralProperties />
