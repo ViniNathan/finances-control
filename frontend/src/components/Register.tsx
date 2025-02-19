@@ -11,14 +11,16 @@ interface RegisterProps {
     category: string;
     id: string;
     onEdit: (id: string) => void;
+    fetchTransactions: () => void;
 };
 
-const Register: React.FC<RegisterProps> = ({ type, amount, date, category, id, onEdit}) => {
+const Register: React.FC<RegisterProps> = ({ type, amount, date, category, id, onEdit, fetchTransactions}) => {
   const { deleteTransaction } = useTransactions();
 
   const handleDelete = async () => {
     try {
       await deleteTransaction(id);
+      fetchTransactions();
     } catch (err: any) {
       console.error(err);
     }
