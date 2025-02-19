@@ -35,11 +35,13 @@ const Dashboard: React.FC = () => {
   const handleEditTransaction = (id: string) => {
     setCurrentEditId(id);
     setIsEditing(true);
+    fetchTransactions();
   };
 
   const handleCloseEdit = () => {
     setIsEditing(false);
     setCurrentEditId(null);
+    fetchTransactions();
   };
 
   return (
