@@ -10,9 +10,10 @@ interface RegisterProps {
     amount: number;
     category: string;
     id: string;
+    onEdit: (id: string) => void;
 };
 
-const Register: React.FC<RegisterProps> = ({ type, amount, date, category,id }) => {
+const Register: React.FC<RegisterProps> = ({ type, amount, date, category, id, onEdit}) => {
   const { deleteTransaction } = useTransactions();
 
   const handleDelete = async () => {
@@ -22,7 +23,6 @@ const Register: React.FC<RegisterProps> = ({ type, amount, date, category,id }) 
       console.error(err);
     }
   }
-
 
   const handleType = (type: string) => {
     if (type === "income") {
@@ -53,7 +53,7 @@ const Register: React.FC<RegisterProps> = ({ type, amount, date, category,id }) 
       <button className="absolute top-3 right-0 text-dark hover:text-red-500" onClick={handleDelete}>
         <RiDeleteBinFill />
       </button>
-      <button className="absolute top-3 right-6 text-dark hover:text-primary">
+      <button className="absolute top-3 right-6 text-dark hover:text-primary" onClick={() => onEdit(id)}>
         <MdOutlineModeEdit />
       </button>
       {handleType(type)}
