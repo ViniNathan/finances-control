@@ -17,9 +17,6 @@ const Dashboard: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentEditId, setCurrentEditId] = useState<string | null>(null);
   const { transactions, fetchTransactions } = useTransactions();
-  
-
-  const pollingInterval = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (generalRef.current) {
