@@ -124,7 +124,7 @@ const Dashboard: React.FC = () => {
               </div>
             </>
           ) : (
-            <NewTransaction setIsAdding={setIsAdding} />
+            <NewTransaction setIsAdding={setIsAdding} fetchTransactions={fetchTransactions} />
           )}
         </div>
       </div>
