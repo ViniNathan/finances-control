@@ -2,15 +2,28 @@ import React from 'react';
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { MdOutlineModeEdit } from "react-icons/md";
+import useTransactions  from '../hooks/useTransactions';
 
 interface RegisterProps {
     type: string;
     date: string;
     amount: number;
     category: string;
+    id: string;
 };
 
-const Register: React.FC<RegisterProps> = ({ type, amount, date, category }) => {
+const Register: React.FC<RegisterProps> = ({ type, amount, date, category,id }) => {
+  const { deleteTransaction } = useTransactions();
+
+  const handleDelete = async () => {
+    try {
+      await deleteTransaction(id);
+    } catch (err: any) {
+      console.error(err);
+    }
+  }
+
+
   const handleType = (type: string) => {
     if (type === "income") {
       return (
@@ -37,7 +50,7 @@ const Register: React.FC<RegisterProps> = ({ type, amount, date, category }) => 
 
   return (
     <div className="relative my-4 py-4 flex flex-row justify-between items-center gap-4">
-      <button className="absolute top-3 right-0 text-dark hover:text-red-500">
+      <button className="absolute top-3 right-0 text-dark hover:text-red-500" onClick={handleDelete}>
         <RiDeleteBinFill />
       </button>
       <button className="absolute top-3 right-6 text-dark hover:text-primary">
