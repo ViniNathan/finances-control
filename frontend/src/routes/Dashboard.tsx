@@ -6,6 +6,7 @@ import DateFilter from "../components/DateFilter";
 import Register from "../components/Register";
 import Navbar from "../components/NavBar";
 import NewTransaction from "../components/NewTransaction";
+import EditTransaction from '../components/EditTransaction';
 import useTransactions from "../hooks/useTransactions";
 
 const Dashboard: React.FC = () => {
@@ -13,6 +14,8 @@ const Dashboard: React.FC = () => {
   const [generalHeight, setGeneralHeight] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentEditId, setCurrentEditId] = useState<string | null>(null);
   const { transactions, fetchTransactions } = useTransactions();
   
 
@@ -58,7 +61,18 @@ const Dashboard: React.FC = () => {
     setIsPanelExpanded(!isPanelExpanded);
   };
 
+  const handleEditTransaction = (id: string) => {
+    setCurrentEditId(id);
+    setIsEditing(true);
+  };
+
+  const handleCloseEdit = () => {
+    setIsEditing(false);
+    setCurrentEditId(null);
+  };
+
   return (
+    isEditing ? <EditTransaction transactionId={currentEditId!} onClose={handleCloseEdit} /> :
     <div className="h-[100dvh] w-screen bg-primary flex flex-col">
       <Topbar classname="py-4 px-4 md:px-8" isPanelExpanded={isPanelExpanded}/>
       <div ref={generalRef}>
@@ -80,7 +94,7 @@ const Dashboard: React.FC = () => {
         </button>
         
         <div className="w-full flex flex-col justify-start items-center mt-5 ">
-          {!isAdding ? (
+          {!isAdding ?(
             <>
               <DateFilter />
               <div className="overflow-y-scroll w-full mt-5 relative min-h-[250px] max-h-[35%] md:max-h-[51%] pr-5
@@ -103,6 +117,7 @@ const Dashboard: React.FC = () => {
                         date={transaction.date}
                         amount={transaction.amount}
                         category={transaction.category}
+                        onEdit={handleEditTransaction}
                       />
                     ))
                 )}
