@@ -1,7 +1,10 @@
 import logo from '../assets/logo_light.png';
 import money from '../assets/money.png';
+import { useNavigate } from 'react-router';
 
 const MainPage = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       {/* Mobile Layout */}
@@ -44,12 +47,12 @@ const MainPage = () => {
         {/* Right Side - Buttons */}
         <div className="flex flex-col justify-center items-center gap-6">
           <img src={money} alt="money" className="size-100"/>
-          <a className="text-center bg-primary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl" href="/login">
+          <button className="text-center bg-primary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl" onClick={() => navigate('/login')}>
             Log In
-          </a>
-          <a className="text-center bg-secondary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl" href="/register">
+          </button>
+          <button className="text-center bg-secondary text-dark font-bold w-64 py-3 rounded-3xl shadow-lg hover:bg-opacity-80 transition text-xl" onClick={() => navigate('/register')}>
             Sign Up
-          </a>
+          </button>
         </div>
       </div>
     </>
