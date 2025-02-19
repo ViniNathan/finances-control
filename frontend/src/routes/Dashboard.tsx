@@ -93,15 +93,17 @@ const Dashboard: React.FC = () => {
                 {transactions.length === 0 ? (
                   <div className="text-dark-green text-lg font-semibold">No transactions found.</div>
                 ) : (
-                  transactions.map((transaction) => (
-                    <Register
-                      key={transaction._id}
-                      type={transaction.type}
-                      date={transaction.date}
-                      amount={transaction.amount}
-                      category={transaction.category}
-                    />
-                  ))
+                  [...transactions]
+                    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+                    .map((transaction) => (
+                      <Register
+                        key={transaction._id}
+                        type={transaction.type}
+                        date={transaction.date}
+                        amount={transaction.amount}
+                        category={transaction.category}
+                      />
+                    ))
                 )}
               </div>
             </>
