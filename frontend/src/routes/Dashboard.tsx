@@ -118,6 +118,7 @@ const Dashboard: React.FC = () => {
                         amount={transaction.amount}
                         category={transaction.category}
                         onEdit={handleEditTransaction}
+                        fetchTransactions={fetchTransactions}
                       />
                     ))
                 )}
