@@ -83,7 +83,7 @@ const Dashboard: React.FC = () => {
           {!isAdding ? (
             <>
               <DateFilter />
-              <div className="overflow-y-scroll w-full mt-5 relative max-h-[35%] md:max-h-[51%] pr-5
+              <div className="overflow-y-scroll w-full mt-5 relative min-h-[250px] max-h-[35%] md:max-h-[51%] pr-5
                             [&::-webkit-scrollbar]:w-1
                             [&::-webkit-scrollbar-track]:bg-secondary 
                             [&::-webkit-scrollbar-thumb]:bg-primary
@@ -98,6 +98,7 @@ const Dashboard: React.FC = () => {
                     .map((transaction) => (
                       <Register
                         key={transaction._id}
+                        id={transaction._id}
                         type={transaction.type}
                         date={transaction.date}
                         amount={transaction.amount}
