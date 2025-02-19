@@ -3,9 +3,10 @@ import useTransactions from "../hooks/useTransactions";
 
 interface NewTransactionProps {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchTransactions: () => void;
 }
 
-const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
+const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding, fetchTransactions}) => {
   const [transactionType, setTransactionType] = useState<"income" | "expense">("income");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
@@ -23,6 +24,7 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding}) => {
         date,
         description,
       });
+      await fetchTransactions();
       setIsAdding(false);
     } catch (err) {
       console.error(err);
