@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
   return (
     isEditing ? <EditTransaction transactionId={currentEditId!} onClose={handleCloseEdit} /> :
     <div className="h-[100dvh] w-screen bg-primary flex flex-col">
-      <Topbar classname="py-4 px-4 md:px-8" isPanelExpanded={isPanelExpanded}/>
+      <Topbar classname="py-4 px-4 md:px-8" isPanelExpanded={isPanelExpanded} transactions={transactions}/>
       <div ref={generalRef}>
         <GeneralProperties transactions={transactions}/>
       </div>
