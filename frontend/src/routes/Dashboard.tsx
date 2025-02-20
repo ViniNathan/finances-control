@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
     <div className="h-[100dvh] w-screen bg-primary flex flex-col">
       <Topbar classname="py-4 px-4 md:px-8" isPanelExpanded={isPanelExpanded}/>
       <div ref={generalRef}>
-        <GeneralProperties />
+        <GeneralProperties transactions={transactions}/>
       </div>
       <div
         className="absolute bottom-0 w-screen flex flex-col justify-start items-center bg-bg rounded-tl-4xl rounded-tr-4xl p-5 overflow-clip shadow-[0_-5px_10px_rgba(14,62,62,0.3)]"
