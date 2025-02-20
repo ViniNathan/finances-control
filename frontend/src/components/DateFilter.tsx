@@ -11,7 +11,7 @@ const DateFilter = () => {
       {options.map((value) => (
         <div
           key={value}
-          className="relative text-dark-green text-md font-semibold py-3 px-4 cursor-pointer rounded-3xl
+          className="relative text-dark-green text-sm font-semibold py-3 px-4 cursor-pointer rounded-3xl
                     md:text-lg"
           onClick={() => setSelected(value)}
         >
