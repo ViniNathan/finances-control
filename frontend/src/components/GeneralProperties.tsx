@@ -1,43 +1,21 @@
-import { useEffect, useState } from 'react';
+import { FC } from 'react';
 import { GiTakeMyMoney, GiReceiveMoney, GiPayMoney } from "react-icons/gi";
-import { transactionService } from '../services/transactionService';
+import { Transaction } from '../types/transaction';
 
-const GeneralProperties = () => {
-  const [balance, setBalance] = useState(0);
-  const [income, setIncome] = useState(0);
-  const [expense, setExpense] = useState(0);
+interface GeneralPropertiesProps {
+  transactions: Transaction[];
+}
 
-  const fetchTransactions = async () => {
-    try {
-      const transactions = await transactionService.getTransactions();
-      
-      const totalIncome = transactions
-        .filter(t => t.type === 'income')
-        .reduce((sum, t) => sum + t.amount, 0);
-        
-      const totalExpense = transactions
-        .filter(t => t.type === 'expense')
-        .reduce((sum, t) => sum + t.amount, 0);
-        
-      setIncome(totalIncome);
-      setExpense(totalExpense);
-      setBalance(totalIncome - totalExpense);
-    } catch (error) {
-      console.error('Error fetching transactions:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchTransactions();
-
-    const intervalId = setInterval(() => {
-      fetchTransactions();
-    }, 5000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+const GeneralProperties: FC<GeneralPropertiesProps> = ({ transactions }) => {
+  const income = transactions
+    .filter(t => t.type === 'income')
+    .reduce((sum, t) => sum + t.amount, 0);
+    
+  const expense = transactions
+    .filter(t => t.type === 'expense')
+    .reduce((sum, t) => sum + t.amount, 0);
+    
+  const balance = income - expense;
 
   const formatCurrency = (value: number) => {
     return `$ ${value.toFixed(2)}`;
