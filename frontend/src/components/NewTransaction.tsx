@@ -24,7 +24,7 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding, fetchTransa
         date,
         description,
       });
-      await fetchTransactions();
+      fetchTransactions();
       setIsAdding(false);
     } catch (err) {
       console.error(err);
