@@ -75,7 +75,7 @@ const DateFilter = () => {
       {openModal && (
         <div className="fixed inset-0 bg-dark flex items-center justify-center z-50">
           <motion.div 
-            className="bg-secondary w-11/12 md:w-1/3 rounded-3xl p-5 shadow-lg"
+            className="bg-secondary w-11/12 md:w-3/4 lg:w-1/3 rounded-3xl p-5 shadow-lg"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
