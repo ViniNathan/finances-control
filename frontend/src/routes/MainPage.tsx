@@ -1,9 +1,26 @@
+import React from 'react';
+import { useNavigate } from 'react-router';
+import { CheckCircle } from 'lucide-react';
 import logo from '../assets/logo_light.png';
 import money from '../assets/money.png';
-import { useNavigate } from 'react-router';
 
 const MainPage = () => {
   const navigate = useNavigate();
+  
+  const features = [
+    {
+      title: "Track your incomes and expenses",
+      description: "Keep detailed records of all your financial movements in one place"
+    },
+    {
+      title: "Visualize by category",
+      description: "Get insights into your spending patterns with intuitive category breakdowns"
+    },
+    {
+      title: "Analyze spending trends over time",
+      description: "Make informed decisions with comprehensive historical analysis"
+    }
+  ];
 
   return (
     <>
@@ -37,11 +54,20 @@ const MainPage = () => {
           <p className="text-2xl font-semibold text-dark max-w-lg">
             Track your expenses and manage your budget efficiently.
           </p>
-          <ul className="text text-dark list-disc list-inside">
-            <li>Track your incomes and expenses</li>
-            <li>Visualize by category</li>
-            <li>Analyze spending trends over time</li>
-          </ul>
+        
+          <div className="space-y-6">
+            {features.map((feature, index) => (
+              <div key={index} className="flex items-start gap-4 group transition-all duration-300 hover:transform hover:translate-x-2">
+                <div className="flex-shrink-0 mt-1">
+                  <CheckCircle className="h-6 w-6 text-primary group-hover:text-secondary transition-colors duration-300" />
+                </div>
+                <div className="flex flex-col">
+                  <h3 className="text-lg font-semibold text-dark">{feature.title}</h3>
+                  <p className="text-sm text-gray-600">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Right Side - Buttons */}
