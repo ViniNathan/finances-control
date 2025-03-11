@@ -41,7 +41,7 @@ const Register: React.FC<RegisterProps> = ({ type, amount, date, category, id, o
       );
     }
   };
-
+  
   const formatDate = (dateString: string) => {
     return new Intl.DateTimeFormat("en-US", {
       year: "2-digit",
