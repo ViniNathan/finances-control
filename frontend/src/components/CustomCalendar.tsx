@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface CalendarProps {
@@ -15,12 +14,10 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [calendarDays, setCalendarDays] = useState<(number | null)[]>([]);
   
-  // Initialize the calendar days when the component mounts
   useEffect(() => {
     generateCalendarDays(currentMonth);
   }, [currentMonth]);
 
-  // Generate the days for the current month
   const generateCalendarDays = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -42,65 +39,93 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
     setCalendarDays(days);
   };
 
-  const nextMonth = () => {
-    const next = new Date(currentMonth);
-    next.setMonth(next.getMonth() + 1);
-    setCurrentMonth(next);
+  const navigate = (increment: number) => {
+    const newDate = new Date(currentMonth);
+    if (selected === "Monthly") {
+      newDate.setFullYear(newDate.getFullYear() + increment);
+    } else if (selected === "Yearly") {
+      newDate.setFullYear(newDate.getFullYear() + (increment * 4));
+    } else {
+      newDate.setMonth(newDate.getMonth() + increment);
+    }
+    setCurrentMonth(newDate);
   };
 
-  const prevMonth = () => {
-    const prev = new Date(currentMonth);
-    prev.setMonth(prev.getMonth() - 1);
-    setCurrentMonth(prev);
-  };
-
-  const formatDate = (year: number, month: number, day: number) => {
+  const formatDate = (year: number, month: number, day: number = 1) => {
     return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   };
 
-    const handleDaySelect = (day: number) => {
-    if (!day) return;
-    
-    setSelectedDay(day);
-    
+  const handleSelect = (value: number, type: 'day' | 'month' | 'year') => {
     const selectedYear = currentMonth.getFullYear();
     const selectedMonth = currentMonth.getMonth();
     
-    const selectedDate = formatDate(selectedYear, selectedMonth, day);
-    setFromDate(selectedDate);
+    let date;
+    if (type === 'day') {
+      date = formatDate(selectedYear, selectedMonth, value);
+      setSelectedDay(value);
+    } else if (type === 'month') {
+      console.log(value);
+      date = formatDate(selectedYear, value + 1);
+    } else {
+      date = formatDate(value - 1, 0);
+    }
+    
+    setFromDate(date);
     
     if (selected === "Weekly") {
-      const endDate = new Date(selectedYear, selectedMonth, day + 7);
+      const endDate = new Date(selectedYear, selectedMonth, value + 6);
       setToDate(formatDate(
         endDate.getFullYear(),
         endDate.getMonth(),
         endDate.getDate()
       ));
-    } else {
-        setToDate('');
+    } else if (selected === "Daily") {
+      console.log(value);
+      setToDate(date);
+    } else if (selected === "Monthly") {
+      const endDate = new Date(selectedYear, value, 0);
+      setToDate(formatDate(
+        endDate.getFullYear(),
+        endDate.getMonth(),
+        endDate.getDate()
+      ));
+    } else if (selected === "Yearly") {
+      setToDate(formatDate(value, 0));
     }
+  };
+
+  const isSelected = (value: number, type: 'day' | 'month' | 'year') => {
+    if (!fromDate) return false;
+    const date = new Date(fromDate);
+    
+    if (type === 'day') return value === selectedDay;
+    if (type === 'month') return value === date.getMonth();
+    return value === date.getFullYear();
   };
 
   const isInRange = (day: number) => {
     if (!fromDate || !toDate || !day || selected !== "Weekly") return false;
     
-    const currentYear = currentMonth.getFullYear();
-    const currentMonthNum = currentMonth.getMonth();
-    const checkDate = new Date(currentYear, currentMonthNum, day);
-    
+    const checkDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
     const start = new Date(fromDate);
     const end = new Date(toDate);
     
     return checkDate >= start && checkDate <= end;
   };
 
-  const isToday = (day: number) => {
-    if (!day) return false;
+  const isToday = (value: number, type: 'day' | 'month' | 'year') => {
+    if (!value) return false;
     
     const today = new Date();
-    return day === today.getDate() && 
-           currentMonth.getMonth() === today.getMonth() && 
-           currentMonth.getFullYear() === today.getFullYear();
+    if (type === 'day') {
+      return value === today.getDate() && 
+             currentMonth.getMonth() === today.getMonth() && 
+             currentMonth.getFullYear() === today.getFullYear();
+    } else if (type === 'month') {
+      return value === today.getMonth() && 
+             currentMonth.getFullYear() === today.getFullYear();
+    }
+    return value === today.getFullYear();
   };
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -109,92 +134,98 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
+  const years = Array.from(
+    { length: 12 }, 
+    (_, i) => currentMonth.getFullYear() - 5 + i
+  );
 
-  const years = Array.from({ length: 12 }, (_, i) => i + 2018).reverse();
+  const renderHeader = () => {
+    let title = "";
+    if (selected === "Monthly") {
+      title = `${currentMonth.getFullYear()}`;
+    } else if (selected === "Yearly") {
+      const startYear = years[0];
+      const endYear = years[years.length - 1];
+      title = `${startYear} - ${endYear}`;
+    } else {
+      title = `${monthNames[currentMonth.getMonth()]} ${currentMonth.getFullYear()}`;
+    }
+
+    return (
+      <div className="flex justify-between items-center mb-6 px-2">
+        <button 
+          onClick={() => navigate(-1)}
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <IoIosArrowBack size={20} className="text-gray-600" />
+        </button>
+        
+        <h2 className="text-lg font-semibold text-gray-800">
+          {title}
+        </h2>
+        
+        <button 
+          onClick={() => navigate(1)}
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <IoIosArrowForward size={20} className="text-gray-600" />
+        </button>
+      </div>
+    );
+  };
+
+  const renderCell = (value: number | null, type: 'day' | 'month' | 'year') => {
+    if (!value) return <div className="invisible" />;
+
+    const label = type === 'month' ? monthNames[value].substring(0, 3) : value;
+    
+    return (
+      <div 
+        onClick={() => handleSelect(value, type)}
+        className={`
+          h-10 flex items-center justify-center text-sm rounded-lg cursor-pointer
+          transition-all duration-200 relative
+          ${isToday(value, type) ? 'border-1 border-dark-green' : ''}
+          ${isSelected(value, type) 
+            ? 'bg-primary text-dark-green font-medium shadow-md' 
+            : 'hover:bg-gray-100 text-gray-700'}
+          ${isInRange(value as number) && !isSelected(value, type) ? 'bg-secondary' : ''}
+        `}
+      >
+        {label}
+      </div>
+    );
+  };
 
   return (
-    <>
-      {selected === "Monthly" ? 
-        <div className="grid grid-cols-3 grid-rows-4 bg-bg">
-            {monthNames.map((month, index) => (
-                <motion.div 
-                key={index} 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="flex justify-center items-center h-10 text-center text-sm font-medium border-1 border-secondary text-dark cursor-pointer"
-                onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), index, 1))}
-                >
-                {month}
-                </motion.div>
-            ))}
+    <div className="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto">
+      {renderHeader()}
+      
+      {selected === "Monthly" ? (
+        <div className="grid grid-cols-3 gap-2">
+          {monthNames.map((_, index) => renderCell(index, 'month'))}
         </div>
-      : selected === "Yearly" ? 
-      <div className="grid grid-cols-3 grid-rows-4 bg-bg">
-        {years.map((month, index) => (
-            <motion.div 
-            key={index} 
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="flex justify-center items-center h-10 text-center text-sm font-medium border-1 border-secondary text-dark cursor-pointer"
-            onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), index, 1))}
-            >
-            {month}
-            </motion.div>
-        ))}
-    </div>
-      : (
-        <div className="bg-bg rounded-lg shadow-lg p-4">
-          <div className="flex justify-between items-center mb-4">
-            <button 
-              onClick={prevMonth}
-              className="p-1 rounded-full hover:bg-primary"
-            >
-              <IoIosArrowBack size={20} className="text-dark-green" />
-            </button>
-            
-            <h2 className="text-lg font-semibold text-dark-green">
-              {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-            </h2>
-            
-            <button 
-              onClick={nextMonth}
-              className="p-1 rounded-full hover:bg-primary"
-            >
-              <IoIosArrowForward size={20} className="text-dark-green" />
-            </button>
-          </div>
-          
-          <div className="grid grid-cols-7 gap-1 mb-2">
+      ) : selected === "Yearly" ? (
+        <div className="grid grid-cols-3 gap-2">
+          {years.map(year => renderCell(year, 'year'))}
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-7 gap-1 mb-4">
             {weekDays.map((day, index) => (
-              <div key={index} className="text-center text-sm font-medium text-dark">
+              <div key={index} className="text-center text-sm font-medium text-gray-500">
                 {day}
               </div>
             ))}
           </div>
           
           <div className="grid grid-cols-7 gap-1">
-            {calendarDays.map((day, index) => (
-              <div 
-                key={index} 
-                onClick={() => day && handleDaySelect(day)}
-                className={`
-                  h-10 flex items-center justify-center text-sm rounded-full cursor-pointer
-                  transition-all duration-200 relative
-                  ${!day ? 'invisible' : ''}
-                  ${isToday(day as number) ? 'border border-dark-green' : ''}
-                  ${day === selectedDay ? 'bg-primary text-dark-green font-bold' : 'hover:bg-secondary'}
-                  ${isInRange(day as number) && day !== selectedDay ? 'bg-primary/30' : ''}
-                `}
-              >
-                {day}
-              </div>
-            ))}
+            {calendarDays.map((day, index) => renderCell(day, 'day'))}
           </div>
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
-  
 };
 
 export default CustomCalendar;
