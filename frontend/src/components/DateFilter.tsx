@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import CustomCalendar from "./CustomCalendar";
 
 const DateFilter = () => {
-  const options = ["Daily", "Weekly", "Monthly", "Yearly"];
+  const options = ["Daily", "Weekly", "Monthly"];
   const [selected, setSelected] = useState("Daily");
   const [openModal, setOpenModal] = useState(false);
   const [fromDate, setFromDate] = useState("");
@@ -16,7 +16,7 @@ const DateFilter = () => {
   const handleSection = (value: string) => {
     setSelected(value);
     setOpenModal(true);
-    setShowCalendar(value === "Daily" || value === "Weekly" || value === "Monthly" || value === "Yearly");
+    setShowCalendar(value === "Daily" || value === "Weekly" || value === "Monthly");
   };
 
   const renderDateSelector = () => {
