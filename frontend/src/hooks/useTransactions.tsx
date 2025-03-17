@@ -1,15 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { transactionService } from "../services/transactionService";
-
-interface Transaction {
-  _id: string;
-  type: "income" | "expense";
-  amount: number;
-  category: string;
-  description?: string;
-  date: string;
-  createdAt: string;
-}
+import { Transaction } from "../types/transaction";
 
 const useTransactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -43,7 +34,7 @@ const useTransactions = () => {
     }
   }, []);
 
-  const createTransaction = useCallback(async (transaction: Omit<Transaction, "_id" | "createdAt">) => {
+  const createTransaction = useCallback(async (transaction: Omit<Transaction, "_id" | "createdAt" | "updatedAt">) => {
     try {
       setLoading(true);
       setError(null);
