@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useTransactions from "../hooks/useTransactions";
 import TransactionForm from "./TransactionForm";
+import { useAuth } from "../hooks/useAuth";
 
 interface NewTransactionProps {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,16 +15,22 @@ const NewTransaction: React.FC<NewTransactionProps> = ({setIsAdding, fetchTransa
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [description, setDescription] = useState("");
   const { createTransaction } = useTransactions();
+  const { user } = useAuth();
 
   const handleAddTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      if (!user || !user._id) {
+        throw new Error("Usuário não autenticado");
+      }
+      
       await createTransaction({
         type: transactionType,
         category,
         amount: Number(amount),
         date,
         description,
+        userId: user._id,
       });
       fetchTransactions();
       setIsAdding(false);
