@@ -7,8 +7,7 @@
     "dev": "nodemon server.js",
     "install-client": "cd frontend && npm install",
     "build-client": "cd frontend && npm run build",
-    "build": "npm install",
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "type": "module",
   "keywords": [],
