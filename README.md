@@ -10,7 +10,6 @@ Welcome to the repository of FinTrack, a powerful finance tracking web applicati
   - [Backend](#backend)
 - [Installation](#installation)
 - [Running the Application](#running-the-application)
-- [Conclusion](#conclusion)
 
 ## Introduction
 
