@@ -1,14 +1,5 @@
 import api from "./api";
-
-interface Transaction {
-  _id: string;
-  type: "income" | "expense";
-  amount: number;
-  category: string;
-  description?: string;
-  date: string;
-  createdAt: string;
-}
+import { Transaction } from "../types/transaction";
 
 export const transactionService = {
   async getTransactions(): Promise<Transaction[]> {
@@ -21,7 +12,7 @@ export const transactionService = {
     return response.data;
   },
 
-  async createTransaction(transaction: Omit<Transaction, "_id" | "createdAt">): Promise<Transaction> {
+  async createTransaction(transaction: Omit<Transaction, "_id" | "createdAt" | "updatedAt">): Promise<Transaction> {
     const response = await api.post<Transaction>("/api/transactions", transaction);
     return response.data;
   },
@@ -38,6 +29,4 @@ export const transactionService = {
   async deleteAllTransactions(): Promise<void> {
     await api.delete("/api/transactions/all");
   }
-
-  
 };
