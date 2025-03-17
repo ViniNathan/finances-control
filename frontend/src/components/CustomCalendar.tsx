@@ -220,7 +220,7 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
           </div>
           
           <div className="grid grid-cols-7 gap-1">
-            {calendarDays.map((day, index) => renderCell(day, 'day'))}
+            {calendarDays.map((day) => renderCell(day, 'day'))}
           </div>
         </>
       )}
