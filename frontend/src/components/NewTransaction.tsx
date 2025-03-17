@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useTransactions from "../hooks/useTransactions";
 import TransactionForm from "./TransactionForm";
-import { useAuth } from "../hooks/useAuth";
 
 interface NewTransactionProps {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>;
