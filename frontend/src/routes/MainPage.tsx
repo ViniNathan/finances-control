@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router';
 import { CheckCircle } from 'lucide-react';
 import logo from '../assets/logo_light.png';
