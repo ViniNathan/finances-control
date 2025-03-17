@@ -9,9 +9,9 @@ const DateFilter = () => {
   const [openModal, setOpenModal] = useState(false);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [month, _setMonth] = useState("");
+  const [year, _setYear] = useState("");
+  const [_showCalendar, setShowCalendar] = useState(false);
 
   const handleSection = (value: string) => {
     setSelected(value);
