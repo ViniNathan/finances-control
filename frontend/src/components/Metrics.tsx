@@ -83,21 +83,21 @@ const Metrics: FC<MetricsProps> = ({ transactions, isPanelExpanded }) => {
               type="monotone" 
               dataKey="income" 
               stroke="#4CAF50" 
-              name="Receitas"
+              name="Income"
               strokeWidth={2}
             />
             <Line 
               type="monotone" 
               dataKey="expense" 
               stroke="#f44336" 
-              name="Despesas"
+              name="Expense"
               strokeWidth={2}
             />
             <Line 
               type="monotone" 
               dataKey="balance" 
               stroke="#2196F3" 
-              name="Saldo"
+              name="Balance"
               strokeWidth={2}
             />
           </LineChart>
