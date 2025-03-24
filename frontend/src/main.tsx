@@ -16,7 +16,6 @@ createRoot(document.getElementById('root')!).render(
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
-      
     </Routes>
   </BrowserRouter>,
 );
