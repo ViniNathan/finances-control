@@ -61,10 +61,12 @@ const useTransactions = () => {
       }
       
       if (filter.type === "Monthly" && filter.fromDate) {
-        const fromDate = new Date(filter.fromDate);
+        const [filterYear, filterMonth] = filter.fromDate.split('-');
+        const filterMonthNumber = parseInt(filterMonth, 10) - 1; // O mês em JavaScript vai de 0 a 11
+        
         return (
-          transactionDate.getFullYear() === fromDate.getFullYear() &&
-          transactionDate.getMonth() === fromDate.getMonth()
+          transactionDate.getFullYear() === parseInt(filterYear, 10) &&
+          transactionDate.getMonth() === filterMonthNumber
         );
       }
       
