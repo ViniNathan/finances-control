@@ -89,8 +89,23 @@ const authController = {
         } catch (error) {
             res.status(500).json({ message: 'Error validating token', error: error.message });
         }
-    }
+    },
 
+    getUserData: async (req, res) => {
+        try {
+            const user = await User.findById(req.user._id).select('-passwordHash');
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email
+            });
+        } catch (error) {
+            res.status(500).json({ message: 'Error retrieving user data', error: error.message });
+        }
+    }
 };
 
 
