@@ -10,10 +10,17 @@ interface DateFilter {
   year: string;
 }
 
+interface CategoryValueFilter {
+  categories: string[];
+  minAmount: number | null;
+  maxAmount: number | null;
+}
+
 const useTransactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
   const [dateFilter, setDateFilter] = useState<DateFilter | null>(null);
+  const [categoryValueFilter, setCategoryValueFilter] = useState<CategoryValueFilter | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,26 +30,33 @@ const useTransactions = () => {
       setError(null);
       const data = await transactionService.getTransactions();
       setTransactions(data);
-      if (dateFilter) {
-        applyDateFilter(data, dateFilter);
-      } else {
-        setFilteredTransactions(data);
+      
+      // Aplicar filtros se existirem
+      let filtered = [...data];
+      
+      if (dateFilter && dateFilter.fromDate) {
+        filtered = applyDateFilter(filtered, dateFilter);
       }
+      
+      if (categoryValueFilter) {
+        filtered = applyCategoryValueFilter(filtered, categoryValueFilter);
+      }
+      
+      setFilteredTransactions(filtered);
     } catch (err: any) {
       setError(err.response?.data?.message || "Erro ao buscar transações");
       throw err;
     } finally {
       setLoading(false);
     }
-  }, [dateFilter]);
+  }, [dateFilter, categoryValueFilter]);
 
   const applyDateFilter = useCallback((data: Transaction[], filter: DateFilter) => {
     if (!filter || !filter.fromDate) {
-      setFilteredTransactions(data);
-      return;
+      return data;
     }
     
-    const filtered = data.filter(transaction => {
+    return data.filter(transaction => {
       const transactionDate = new Date(transaction.date);
       
       if (filter.type === "Daily" && filter.fromDate) {
@@ -72,14 +86,62 @@ const useTransactions = () => {
       
       return true;
     });
+  }, []);
+
+  const applyCategoryValueFilter = useCallback((data: Transaction[], filter: CategoryValueFilter) => {
+    if (!filter) {
+      return data;
+    }
     
-    setFilteredTransactions(filtered);
+    return data.filter(transaction => {
+      // Filtro por categoria
+      if (filter.categories.length > 0 && !filter.categories.includes(transaction.category)) {
+        return false;
+      }
+      
+      // Filtro por valor mínimo
+      if (filter.minAmount !== null && transaction.amount < filter.minAmount) {
+        return false;
+      }
+      
+      // Filtro por valor máximo
+      if (filter.maxAmount !== null && transaction.amount > filter.maxAmount) {
+        return false;
+      }
+      
+      return true;
+    });
   }, []);
 
   const updateDateFilter = useCallback((filter: DateFilter) => {
     setDateFilter(filter);
-    applyDateFilter(transactions, filter);
-  }, [transactions, applyDateFilter]);
+    
+    let filtered = [...transactions];
+    
+    if (filter.fromDate) {
+      filtered = applyDateFilter(filtered, filter);
+    }
+    
+    if (categoryValueFilter) {
+      filtered = applyCategoryValueFilter(filtered, categoryValueFilter);
+    }
+    
+    setFilteredTransactions(filtered);
+  }, [transactions, applyDateFilter, categoryValueFilter, applyCategoryValueFilter]);
+
+  const updateCategoryValueFilter = useCallback((filter: CategoryValueFilter) => {
+    setCategoryValueFilter(filter);
+    
+    let filtered = [...transactions];
+    
+    if (dateFilter && dateFilter.fromDate) {
+      filtered = applyDateFilter(filtered, dateFilter);
+    }
+    
+    filtered = applyCategoryValueFilter(filtered, filter);
+    
+    setFilteredTransactions(filtered);
+  }, [transactions, dateFilter, applyDateFilter, applyCategoryValueFilter]);
 
   const getTransactionById = useCallback(async (id: string) => {
     try {
@@ -100,13 +162,21 @@ const useTransactions = () => {
       setError(null);
       const data = await transactionService.createTransaction(transaction);
       
-      setTransactions(prev => [...prev, data]);
+      const updatedTransactions = [...transactions, data];
+      setTransactions(updatedTransactions);
       
-      if (dateFilter) {
-        applyDateFilter([...transactions, data], dateFilter);
-      } else {
-        setFilteredTransactions(prev => [...prev, data]);
+      // Aplicar filtros aos dados atualizados
+      let filtered = [...updatedTransactions];
+      
+      if (dateFilter && dateFilter.fromDate) {
+        filtered = applyDateFilter(filtered, dateFilter);
       }
+      
+      if (categoryValueFilter) {
+        filtered = applyCategoryValueFilter(filtered, categoryValueFilter);
+      }
+      
+      setFilteredTransactions(filtered);
       
       return data;
     } catch (err: any) {
@@ -115,7 +185,7 @@ const useTransactions = () => {
     } finally {
       setLoading(false);
     }
-  }, [transactions, dateFilter, applyDateFilter]);
+  }, [transactions, dateFilter, categoryValueFilter, applyDateFilter, applyCategoryValueFilter]);
 
   const updateTransaction = useCallback(async (id: string, updatedData: Partial<Transaction>) => {
     try {
@@ -126,11 +196,18 @@ const useTransactions = () => {
       const updatedTransactions = transactions.map(t => (t._id === id ? data : t));
       setTransactions(updatedTransactions);
       
-      if (dateFilter) {
-        applyDateFilter(updatedTransactions, dateFilter);
-      } else {
-        setFilteredTransactions(updatedTransactions);
+      // Aplicar filtros aos dados atualizados
+      let filtered = [...updatedTransactions];
+      
+      if (dateFilter && dateFilter.fromDate) {
+        filtered = applyDateFilter(filtered, dateFilter);
       }
+      
+      if (categoryValueFilter) {
+        filtered = applyCategoryValueFilter(filtered, categoryValueFilter);
+      }
+      
+      setFilteredTransactions(filtered);
       
       return data;
     } catch (err: any) {
@@ -139,7 +216,7 @@ const useTransactions = () => {
     } finally {
       setLoading(false);
     }
-  }, [transactions, dateFilter, applyDateFilter]);
+  }, [transactions, dateFilter, categoryValueFilter, applyDateFilter, applyCategoryValueFilter]);
 
   const deleteTransaction = useCallback(async (id: string) => {
     try {
@@ -150,18 +227,25 @@ const useTransactions = () => {
       const updatedTransactions = transactions.filter(t => t._id !== id);
       setTransactions(updatedTransactions);
       
-      if (dateFilter) {
-        applyDateFilter(updatedTransactions, dateFilter);
-      } else {
-        setFilteredTransactions(updatedTransactions);
+      // Aplicar filtros aos dados atualizados
+      let filtered = [...updatedTransactions];
+      
+      if (dateFilter && dateFilter.fromDate) {
+        filtered = applyDateFilter(filtered, dateFilter);
       }
+      
+      if (categoryValueFilter) {
+        filtered = applyCategoryValueFilter(filtered, categoryValueFilter);
+      }
+      
+      setFilteredTransactions(filtered);
     } catch (err: any) {
       setError(err.response?.data?.message || "Erro ao deletar transação");
       throw err;
     } finally {
       setLoading(false);
     }
-  }, [transactions, dateFilter, applyDateFilter]);
+  }, [transactions, dateFilter, categoryValueFilter, applyDateFilter, applyCategoryValueFilter]);
 
   const deleteAllTransactions = useCallback(async () => {
     try {
@@ -193,7 +277,8 @@ const useTransactions = () => {
     updateTransaction,
     deleteTransaction,
     deleteAllTransactions,
-    updateDateFilter
+    updateDateFilter,
+    updateCategoryValueFilter
   };
 };
 
