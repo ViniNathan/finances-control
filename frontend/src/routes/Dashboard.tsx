@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isShowingMetrics, setIsShowingMetrics] = useState(false);
   const [currentEditId, setCurrentEditId] = useState<string | null>(null);
-  const { transactions, fetchTransactions } = useTransactions();
+  const { transactions, fetchTransactions, updateDateFilter } = useTransactions();
 
   useEffect(() => {
     if (generalRef.current) {
@@ -52,6 +52,16 @@ const Dashboard: React.FC = () => {
     fetchTransactions();
   };
 
+  const handleDateFilterChange = (filterData: {
+    type: string;
+    fromDate: string;
+    toDate: string;
+    month: string;
+    year: string;
+  }) => {
+    updateDateFilter(filterData);
+  };
+
   const renderContent = () => {
     if (isShowingMetrics) {
       return (
@@ -70,7 +80,7 @@ const Dashboard: React.FC = () => {
 
     return (
       <>
-        <DateFilter />
+        <DateFilter onDateFilterChange={handleDateFilterChange} />
         <div className="overflow-y-scroll w-full mt-5 relative min-h-[250px] max-h-[35%] md:max-h-[51%] pr-5
                       [&::-webkit-scrollbar]:w-1
                       [&::-webkit-scrollbar-track]:bg-secondary 
