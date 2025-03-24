@@ -31,7 +31,6 @@ const useTransactions = () => {
       const data = await transactionService.getTransactions();
       setTransactions(data);
       
-      // Aplicar filtros se existirem
       let filtered = [...data];
       
       if (dateFilter && dateFilter.fromDate) {
