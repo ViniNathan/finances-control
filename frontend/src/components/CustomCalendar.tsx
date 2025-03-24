@@ -65,15 +65,18 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
       setSelectedDay(value);
     } else if (type === 'month') {
       console.log(value);
-      date = formatDate(selectedYear, value + 1);
+      date = formatDate(selectedYear, value, 1);
     } else {
-      date = formatDate(value - 1, 0);
+      date = formatDate(value, 0, 1);
     }
     
     setFromDate(date);
     
     if (selected === "Weekly") {
-      const endDate = new Date(selectedYear, selectedMonth, value + 6);
+      const startDate = new Date(`${date}T00:00:00`);
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
+      
       setToDate(formatDate(
         endDate.getFullYear(),
         endDate.getMonth(),
@@ -83,20 +86,22 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
       console.log(value);
       setToDate(date);
     } else if (selected === "Monthly") {
-      const endDate = new Date(selectedYear, value, 0);
+      const endDate = new Date(selectedYear, value + 1, 0);
       setToDate(formatDate(
         endDate.getFullYear(),
         endDate.getMonth(),
         endDate.getDate()
       ));
     } else if (selected === "Yearly") {
-      setToDate(formatDate(value, 0));
+      setToDate(formatDate(value, 11, 31));
     }
   };
 
   const isSelected = (value: number, type: 'day' | 'month' | 'year') => {
     if (!fromDate) return false;
-    const date = new Date(fromDate);
+    
+    const [year, month, day] = fromDate.split('-');
+    const date = new Date(`${year}-${month}-${day}T00:00:00`);
     
     if (type === 'day') return value === selectedDay;
     if (type === 'month') return value === date.getMonth();
@@ -106,9 +111,13 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
   const isInRange = (day: number) => {
     if (!fromDate || !toDate || !day || selected !== "Weekly") return false;
     
-    const checkDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    const start = new Date(fromDate);
-    const end = new Date(toDate);
+    const checkDate = new Date(`${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}T00:00:00`);
+    
+    const [fromYear, fromMonth, fromDay] = fromDate.split('-');
+    const [toYear, toMonth, toDay] = toDate.split('-');
+    
+    const start = new Date(`${fromYear}-${fromMonth}-${fromDay}T00:00:00`);
+    const end = new Date(`${toYear}-${toMonth}-${toDay}T00:00:00`);
     
     return checkDate >= start && checkDate <= end;
   };
@@ -117,10 +126,15 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
     if (!value) return false;
     
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     if (type === 'day') {
-      return value === today.getDate() && 
-             currentMonth.getMonth() === today.getMonth() && 
-             currentMonth.getFullYear() === today.getFullYear();
+      const selectedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), value);
+      selectedDate.setHours(0, 0, 0, 0);
+      
+      return selectedDate.getDate() === today.getDate() && 
+             selectedDate.getMonth() === today.getMonth() && 
+             selectedDate.getFullYear() === today.getFullYear();
     } else if (type === 'month') {
       return value === today.getMonth() && 
              currentMonth.getFullYear() === today.getFullYear();
