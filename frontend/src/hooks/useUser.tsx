@@ -14,7 +14,7 @@ export const useUser = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await api.get('/auth/user');
+            const response = await api.get('/api/auth/user');
             setUser(response.data);
             setError(null);
         } catch (err) {
