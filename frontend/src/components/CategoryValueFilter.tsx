@@ -140,7 +140,7 @@ const CategoryValueFilter = ({ transactions, onFilterChange }: CategoryValueFilt
                   </button>
                 ))}
                 {uniqueCategories.length === 0 && (
-                  <p className="text-gray-500 italic">Nenhuma categoria disponível</p>
+                  <p className="text-gray-500 italic">No category available</p>
                 )}
               </div>
             </div>
