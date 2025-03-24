@@ -3,16 +3,20 @@ import { IoIosLogOut } from "react-icons/io";
 import { GiTakeMyMoney, GiReceiveMoney, GiPayMoney } from "react-icons/gi";
 import { useNavigate } from "react-router";
 import { Transaction } from '../types/transaction';
+import useUser from '../hooks/useUser';
 
 interface TopbarProps {
-  username?: string;
   classname?: string;
   isPanelExpanded: boolean;
   transactions: Transaction[];
 }
 
-const Topbar: FC<TopbarProps> = ({ username = "Username", classname, isPanelExpanded, transactions }) => {
+const Topbar: FC<TopbarProps> = ({ classname, isPanelExpanded, transactions }) => {
   const navigate = useNavigate();
+  const { user } = useUser();
+  console.log(user);
+
+  const firstName = user?.name ? user.name.split(' ')[0] : 'User';
 
   const income = transactions
     .filter(t => t.type === 'income')
@@ -29,8 +33,8 @@ const Topbar: FC<TopbarProps> = ({ username = "Username", classname, isPanelExpa
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove the token from local storage
-    navigate("/login"); // Redirect to login page
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   const handlePanel = () => {
@@ -62,8 +66,7 @@ const Topbar: FC<TopbarProps> = ({ username = "Username", classname, isPanelExpa
   return (
     <div className={`flex justify-between items-center ${classname}`}>
       <div className="flex flex-col justify-center items-start">
-        <div className="text-dark-green text-lg font-bold">Hi, Welcome back</div>
-        <div className="text-dark-green text-sm">{username}</div>
+        <div className="text-dark-green text-lg font-bold">Welcome back, {firstName}</div>
       </div>
       {handlePanel()}
     </div>
