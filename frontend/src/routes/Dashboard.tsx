@@ -81,7 +81,7 @@ const Dashboard: React.FC = () => {
     return (
       <>
         <DateFilter onDateFilterChange={handleDateFilterChange} />
-        <div className="overflow-y-scroll w-full mt-5 relative min-h-[250px] max-h-[35%] md:max-h-[51%] pr-5
+        <div className="overflow-y-auto w-full mt-5 relative min-h-[200px] max-h-[calc(100vh-290px)] md:max-h-[calc(100vh-250px)] pr-5
                       [&::-webkit-scrollbar]:w-1
                       [&::-webkit-scrollbar-track]:bg-secondary 
                       [&::-webkit-scrollbar-thumb]:bg-primary
@@ -113,36 +113,46 @@ const Dashboard: React.FC = () => {
 
   return (
     isEditing ? <EditTransaction transactionId={currentEditId!} onClose={handleCloseEdit} /> :
-    <div className="h-[100dvh] overflow-y-hidden w-screen bg-primary flex flex-col">
-      <Topbar classname="py-4 px-4 md:px-8" isPanelExpanded={isPanelExpanded} transactions={transactions}/>
-      <div ref={generalRef}>
-        <GeneralProperties transactions={transactions}/>
+    <div className="h-[100dvh] w-screen flex flex-col overflow-hidden">
+      <div className="bg-primary w-full">
+        <Topbar classname="py-4 px-4 md:px-8" isPanelExpanded={isPanelExpanded} transactions={transactions}/>
+        {!isPanelExpanded && (
+          <div ref={generalRef}>
+            <GeneralProperties transactions={transactions}/>
+          </div>
+        )}
       </div>
-      <div
-        className="absolute bottom-0 w-screen flex flex-col justify-start items-center bg-bg rounded-tl-4xl rounded-tr-4xl p-5 overflow-clip shadow-[0_-5px_10px_rgba(14,62,62,0.3)]"
-        style={{ top: isPanelExpanded ? "70px" : `${generalHeight + 64}px` }}
+      <div 
+        className="flex-grow relative bg-bg"
+        style={{ height: `calc(100vh - ${isPanelExpanded ? 70 : generalHeight + 64}px - 60px)` }}
       >
-        <button
-          onClick={togglePanel}
-          className="absolute top-0 left-1/2 transform -translate-x-1/2"
+        <div
+          className="absolute inset-0 flex flex-col justify-start items-center bg-bg p-5 overflow-hidden shadow-[0_-5px_10px_rgba(14,62,62,0.3)]"
         >
-          {isPanelExpanded ? (
-            <ChevronDown className="size-10 text-gray-600" />
-          ) : (
-            <ChevronUp className="size-10 text-gray-600" />
-          )}
-        </button>
-        
-        <div className="w-full h-full flex flex-col justify-start items-center mt-5">
-          {renderContent()}
+          <button
+            onClick={togglePanel}
+            className="absolute top-0 left-1/2 transform -translate-x-1/2"
+          >
+            {isPanelExpanded ? (
+              <ChevronDown className="size-10 text-gray-600" />
+            ) : (
+              <ChevronUp className="size-10 text-gray-600" />
+            )}
+          </button>
+          
+          <div className="w-full h-full flex flex-col justify-start items-center mt-5 overflow-hidden">
+            {renderContent()}
+          </div>
         </div>
       </div>
-      <Navbar 
-        isAdding={isAdding} 
-        setIsAdding={setIsAdding}
-        isShowingMetrics={isShowingMetrics}
-        setIsShowingMetrics={setIsShowingMetrics}
-      />
+      <div className="h-[60px]">
+        <Navbar 
+          isAdding={isAdding} 
+          setIsAdding={setIsAdding}
+          isShowingMetrics={isShowingMetrics}
+          setIsShowingMetrics={setIsShowingMetrics}
+        />
+      </div>
     </div>
   );
 };
