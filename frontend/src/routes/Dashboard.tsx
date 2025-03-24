@@ -3,6 +3,7 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import Topbar from "../components/Topbar";
 import GeneralProperties from "../components/GeneralProperties";
 import DateFilter from "../components/DateFilter";
+import CategoryValueFilter from "../components/CategoryValueFilter";
 import Register from "../components/Register";
 import Navbar from "../components/NavBar";
 import NewTransaction from "../components/NewTransaction";
@@ -18,7 +19,7 @@ const Dashboard: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isShowingMetrics, setIsShowingMetrics] = useState(false);
   const [currentEditId, setCurrentEditId] = useState<string | null>(null);
-  const { transactions, fetchTransactions, updateDateFilter } = useTransactions();
+  const { transactions, fetchTransactions, updateDateFilter, updateCategoryValueFilter } = useTransactions();
 
   useEffect(() => {
     if (generalRef.current) {
@@ -68,6 +69,14 @@ const Dashboard: React.FC = () => {
     updateDateFilter(filterData);
   };
 
+  const handleCategoryValueFilterChange = (filters: {
+    categories: string[];
+    minAmount: number | null;
+    maxAmount: number | null;
+  }) => {
+    updateCategoryValueFilter(filters);
+  };
+
   const renderContent = () => {
     if (isShowingMetrics) {
       return (
@@ -87,6 +96,10 @@ const Dashboard: React.FC = () => {
     return (
       <>
         <DateFilter onDateFilterChange={handleDateFilterChange} />
+        <CategoryValueFilter 
+          transactions={transactions}
+          onFilterChange={handleCategoryValueFilterChange}
+        />
         <div className="overflow-y-auto w-full mt-5 relative min-h-[200px] max-h-[calc(100vh-290px)] md:max-h-[calc(100vh-250px)] pr-5
                       [&::-webkit-scrollbar]:w-1
                       [&::-webkit-scrollbar-track]:bg-secondary 
