@@ -7,6 +7,7 @@ import Register from "../components/Register";
 import Navbar from "../components/NavBar";
 import NewTransaction from "../components/NewTransaction";
 import EditTransaction from '../components/EditTransaction';
+import Metrics from '../components/Metrics';
 import useTransactions from "../hooks/useTransactions";
 
 const Dashboard: React.FC = () => {
@@ -15,6 +16,7 @@ const Dashboard: React.FC = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [isPanelExpanded, setIsPanelExpanded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isShowingMetrics, setIsShowingMetrics] = useState(false);
   const [currentEditId, setCurrentEditId] = useState<string | null>(null);
   const { transactions, fetchTransactions } = useTransactions();
 
@@ -27,6 +29,12 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     fetchTransactions();
   }, []);
+
+  useEffect(() => {
+    if (isShowingMetrics && !isPanelExpanded) {
+      setIsPanelExpanded(true);
+    }
+  }, [isShowingMetrics]);
 
   const togglePanel = () => {
     setIsPanelExpanded(!isPanelExpanded);
@@ -42,6 +50,55 @@ const Dashboard: React.FC = () => {
     setIsEditing(false);
     setCurrentEditId(null);
     fetchTransactions();
+  };
+
+  const renderContent = () => {
+    if (isShowingMetrics) {
+      return (
+        <div className="w-full h-full">
+          <Metrics 
+            transactions={transactions} 
+            isPanelExpanded={isPanelExpanded}
+          />
+        </div>
+      );
+    }
+
+    if (isAdding) {
+      return <NewTransaction setIsAdding={setIsAdding} fetchTransactions={fetchTransactions} />;
+    }
+
+    return (
+      <>
+        <DateFilter />
+        <div className="overflow-y-scroll w-full mt-5 relative min-h-[250px] max-h-[35%] md:max-h-[51%] pr-5
+                      [&::-webkit-scrollbar]:w-1
+                      [&::-webkit-scrollbar-track]:bg-secondary 
+                      [&::-webkit-scrollbar-thumb]:bg-primary
+                      [&::-webkit-scrollbar-thumb]:rounded-full 
+                      [&::-webkit-scrollbar-track]:rounded-full
+                      [&::-webkit-scrollbar-thumb:hover]:bg-gray-400">
+          {transactions.length === 0 ? (
+            <div className="text-dark-green text-lg font-semibold">No transactions found.</div>
+          ) : (
+            [...transactions]
+              .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+              .map((transaction) => (
+                <Register
+                  key={transaction._id}
+                  id={transaction._id}
+                  type={transaction.type}
+                  date={transaction.date}
+                  amount={transaction.amount}
+                  category={transaction.category}
+                  onEdit={handleEditTransaction}
+                  fetchTransactions={fetchTransactions}
+                />
+              ))
+          )}
+        </div>
+      </>
+    );
   };
 
   return (
@@ -66,43 +123,16 @@ const Dashboard: React.FC = () => {
           )}
         </button>
         
-        <div className="w-full flex flex-col justify-start items-center mt-5 ">
-          {!isAdding ?(
-            <>
-              <DateFilter />
-              <div className="overflow-y-scroll w-full mt-5 relative min-h-[250px] max-h-[35%] md:max-h-[51%] pr-5
-                            [&::-webkit-scrollbar]:w-1
-                            [&::-webkit-scrollbar-track]:bg-secondary 
-                            [&::-webkit-scrollbar-thumb]:bg-primary
-                            [&::-webkit-scrollbar-thumb]:rounded-full 
-                            [&::-webkit-scrollbar-track]:rounded-full
-                            [&::-webkit-scrollbar-thumb:hover]:bg-gray-400">
-                {transactions.length === 0 ? (
-                  <div className="text-dark-green text-lg font-semibold">No transactions found.</div>
-                ) : (
-                  [...transactions]
-                    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-                    .map((transaction) => (
-                      <Register
-                        key={transaction._id}
-                        id={transaction._id}
-                        type={transaction.type}
-                        date={transaction.date}
-                        amount={transaction.amount}
-                        category={transaction.category}
-                        onEdit={handleEditTransaction}
-                        fetchTransactions={fetchTransactions}
-                      />
-                    ))
-                )}
-              </div>
-            </>
-          ) : (
-            <NewTransaction setIsAdding={setIsAdding} fetchTransactions={fetchTransactions} />
-          )}
+        <div className="w-full h-full flex flex-col justify-start items-center mt-5">
+          {renderContent()}
         </div>
       </div>
-      <Navbar isAdding={isAdding} setIsAdding={setIsAdding}/>
+      <Navbar 
+        isAdding={isAdding} 
+        setIsAdding={setIsAdding}
+        isShowingMetrics={isShowingMetrics}
+        setIsShowingMetrics={setIsShowingMetrics}
+      />
     </div>
   );
 };
