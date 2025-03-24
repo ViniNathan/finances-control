@@ -1,4 +1,4 @@
- // ES6 syntax for importing modules
+// ES6 syntax for importing modules
 import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -15,8 +15,14 @@ const PORT = process.env.PORT || 5000;
 
 connectDB(); // Call connectDB function
 app.use(express.json()); // Middleware to parse JSON data in request body
-app.use(cors()); // Middleware to enable CORS
 
+// Configure CORS
+app.use(cors({
+    origin: ['https://finances-control-fintrack.vercel.app', 'http://localhost:5173'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 
 // Define routes
 app.use('/api/transactions', transactionRoutes); // Routes for transactions
