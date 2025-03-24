@@ -36,6 +36,12 @@ const Dashboard: React.FC = () => {
     }
   }, [isShowingMetrics]);
 
+  useEffect(() => {
+    if (isAdding && !isPanelExpanded) {
+      setIsPanelExpanded(true);
+    }
+  }, [isAdding]);
+
   const togglePanel = () => {
     setIsPanelExpanded(!isPanelExpanded);
   };
