@@ -17,12 +17,7 @@ connectDB(); // Call connectDB function
 app.use(express.json()); // Middleware to parse JSON data in request body
 
 // Configure CORS
-app.use(cors({
-    origin: ['https://finances-control-fintrack.vercel.app', 'http://localhost:5173'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
+app.use(cors()); // Middleware to enable CORS
 
 // Define routes
 app.use('/api/transactions', transactionRoutes); // Routes for transactions
