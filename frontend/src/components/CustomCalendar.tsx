@@ -52,7 +52,9 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
   };
 
   const formatDate = (year: number, month: number, day: number = 1) => {
-    return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    console.log(`Formato de data: ano=${year}, mês=${month} (${month+1}), dia=${day} => ${formattedDate}`);
+    return formattedDate;
   };
 
   const handleSelect = (value: number, type: 'day' | 'month' | 'year') => {
@@ -64,8 +66,8 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
       date = formatDate(selectedYear, selectedMonth, value);
       setSelectedDay(value);
     } else if (type === 'month') {
-      console.log(value);
       date = formatDate(selectedYear, value, 1);
+      console.log(`Mês selecionado: ${value + 1}, Data de início: ${date}`);
     } else {
       date = formatDate(value, 0, 1);
     }
@@ -86,11 +88,11 @@ const CustomCalendar = ({ selected, fromDate, setFromDate, toDate, setToDate }: 
       console.log(value);
       setToDate(date);
     } else if (selected === "Monthly") {
-      const endDate = new Date(selectedYear, value + 1, 0);
+      const lastDay = new Date(selectedYear, value + 1, 0).getDate();
       setToDate(formatDate(
-        endDate.getFullYear(),
-        endDate.getMonth(),
-        endDate.getDate()
+        selectedYear,
+        value,
+        lastDay
       ));
     } else if (selected === "Yearly") {
       setToDate(formatDate(value, 11, 31));
