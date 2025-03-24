@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const api: AxiosInstance = axios.create({
-  baseURL: "https://fintrack-backend-pied.vercel.app"
+  baseURL: "https://fintrack-backend-murex.vercel.app"
 });
 
 api.interceptors.request.use((config) => {
