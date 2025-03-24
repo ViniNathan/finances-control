@@ -1,17 +1,29 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { IoMdClose } from "react-icons/io";
+import { FaFilter } from "react-icons/fa";
 import CustomCalendar from "./CustomCalendar";
 
-const DateFilter = () => {
+interface DateFilterProps {
+  onDateFilterChange: (filterData: {
+    type: string;
+    fromDate: string;
+    toDate: string;
+    month: string;
+    year: string;
+  }) => void;
+}
+
+const DateFilter = ({ onDateFilterChange }: DateFilterProps) => {
   const options = ["Daily", "Weekly", "Monthly"];
   const [selected, setSelected] = useState("Daily");
   const [openModal, setOpenModal] = useState(false);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [month, _setMonth] = useState("");
-  const [year, _setYear] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
   const [_showCalendar, setShowCalendar] = useState(false);
+  const [filterActive, setFilterActive] = useState(false);
 
   const handleSection = (value: string) => {
     setSelected(value);
@@ -35,41 +47,101 @@ const DateFilter = () => {
   };
 
   const handleApply = () => {
-    console.log({ 
+    const filterData = { 
       type: selected,
       fromDate,
       toDate,
       month,
       year
-    });
+    };
+    
+    console.log(filterData);
+    onDateFilterChange(filterData);
+    setFilterActive(!!fromDate);
     setOpenModal(false);
     setShowCalendar(false);
   };
 
+  const clearFilter = () => {
+    setFromDate("");
+    setToDate("");
+    setMonth("");
+    setYear("");
+    setFilterActive(false);
+    
+    onDateFilterChange({
+      type: selected,
+      fromDate: "",
+      toDate: "",
+      month: "",
+      year: ""
+    });
+  };
+
+  const formatDisplayDate = () => {
+    if (!fromDate) return null;
+    
+    const formatDate = (dateString: string) => {
+      const [year, month, day] = dateString.split('-');
+      return new Date(`${year}-${month}-${day}T00:00:00`).toLocaleDateString('pt-BR', { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: '2-digit' 
+      });
+    };
+    
+    if (selected === 'Daily') {
+      return formatDate(fromDate);
+    } else if (selected === 'Weekly') {
+      return `${formatDate(fromDate)} - ${formatDate(toDate)}`;
+    } else if (selected === 'Monthly') {
+      const [year, month] = fromDate.split('-');
+      const date = new Date(`${year}-${month}-01T00:00:00`);
+      return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+    
+    return null;
+  };
+
   return (
     <>
-      <div className="sticky top-0 w-max h-max py-1 px-1 bg-secondary rounded-4xl flex flex-row justify-center items-center gap-3 z-2
+      <div className="sticky top-0 flex flex-col items-center w-full">
+        <div className="w-max h-max py-1 px-1 bg-secondary rounded-4xl flex flex-row justify-center items-center gap-3 z-2
                       md:py-2 md:px-3 md:gap-5">
-        {options.map((value) => (
-          <div
-            key={value}
-            className="relative text-dark-green text-sm font-semibold py-3 px-4 cursor-pointer rounded-3xl
-                      md:text-lg"
-            onClick={() => handleSection(value)}
-          >
-            {selected === value && (
-              <motion.div
-                layoutId="underline"
-                className="absolute inset-1 bg-primary rounded-3xl"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              />
-            )}
-            <span className="relative z-10">{value}</span>
+          {options.map((value) => (
+            <div
+              key={value}
+              className="relative text-dark-green text-sm font-semibold py-3 px-4 cursor-pointer rounded-3xl
+                        md:text-lg"
+              onClick={() => handleSection(value)}
+            >
+              {selected === value && (
+                <motion.div
+                  layoutId="underline"
+                  className="absolute inset-1 bg-primary rounded-3xl"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                />
+              )}
+              <span className="relative z-10">{value}</span>
+            </div>
+          ))}
+        </div>
+        
+        {filterActive && (
+          <div className="flex items-center justify-center gap-2 mt-2 text-sm text-dark-green bg-secondary px-3 py-1 rounded-full">
+            <FaFilter className="text-primary" />
+            <span>{formatDisplayDate()}</span>
+            <button 
+              onClick={clearFilter}
+              className="ml-1 text-dark hover:text-dark-green"
+            >
+              <IoMdClose size={16} />
+            </button>
           </div>
-        ))}
+        )}
       </div>
       
       {openModal && (
