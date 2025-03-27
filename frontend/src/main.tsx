@@ -5,11 +5,13 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import Dashboard from './routes/Dashboard';
 import PrivateRoute from './routes/PrivateRoute';
+import { Analytics } from "@vercel/analytics/react"
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <Routes>
+      <Analytics/>
       <Route path="/" element={<MainPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
